@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "prettier": "npx prettier --write"
+    "prettier": "npx prettier --write",
+    "example:express": "node ./examples/express-graphql/index.js",
+    "dev:express": "npx nodemon -i dist -e \"js ts\" -x \"npm run build && npm run example:express\""
   },
   "keywords": [],
   "author": "",
