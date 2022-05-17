@@ -1,25 +1,14 @@
-import type {
-  GraphQLSchema,
-  GraphQLField,
-  GraphQLFieldResolver,
-} from 'graphql';
 import { responsePathAsArray } from 'graphql';
-import {
-  IGraphQLNamedType,
-  IGraphQLOptions,
-  IGraphQLRequestInfo,
-} from './types';
-
-const nsToMs = (nanoseconds: bigint) => {
-  return Number(nanoseconds / BigInt(1000000));
-};
+import type { GraphQLFieldResolver } from 'graphql';
+import type { IGraphQLOptions, IGraphQLRequestInfo } from './types';
+import { nsToMs, useResolverDecorator } from './util';
 
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
 export const addResolverTraceExtension = (options: any) => {
   const timeBasis = process.hrtime.bigint();
-  useTraceDecorator(options.schema);
+  useResolverDecorator(options.schema, trace);
 
   options[SYMBOL_START_TIME] = timeBasis;
   return useTraceExtension(options);
@@ -32,27 +21,6 @@ function useTraceExtension(options: IGraphQLOptions) {
   });
 
   return options;
-}
-
-function useTraceDecorator(schema: GraphQLSchema) {
-  for (const typeName in schema.getTypeMap()) {
-    const type = schema.getType(typeName) as IGraphQLNamedType;
-    applyTraceToType(type);
-  }
-}
-
-function applyTraceToType(type: IGraphQLNamedType) {
-  if (type.getFields) {
-    const fields = type.getFields();
-
-    for (const fieldName in fields) {
-      const field = fields[fieldName] as GraphQLField<any, any>;
-
-      if (field.resolve) {
-        field.resolve = trace(field.resolve);
-      }
-    }
-  }
 }
 
 function trace(
