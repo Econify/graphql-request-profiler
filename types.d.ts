@@ -7,14 +7,9 @@ export interface IResolverTrace {
 }
 
 export interface IGraphQLOptions {
-  // TODO: type me
   schema: any;
   context: any;
   extensions: any;
-}
-
-export interface IGraphQLRequestInfo {
-  context: any;
 }
 
 export type IGraphQLNamedType = GraphQLNamedType & {

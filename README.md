@@ -8,4 +8,7 @@ GraphQL extension to trace resolver execution time.
 
 ### express-graphql
 
-### apollo
+## TODO
+
+- Investigate use w/ apollo
+- Investigate use w/ federation

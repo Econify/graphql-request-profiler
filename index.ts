@@ -1,5 +1,5 @@
 import type { GraphQLFieldResolver } from 'graphql';
-import type { IGraphQLOptions, IGraphQLRequestInfo } from './types';
+import type { IGraphQLOptions } from './types';
 
 import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
@@ -7,7 +7,14 @@ import { nsToMs, useResolverDecorator } from './util';
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
-export const addResolverTraceExtension = (options: any) => {
+export const getTraces = (context: IGraphQLOptions['context']) => {
+  return {
+    totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
+    traces: context[SYMBOL_TRACES],
+  };
+};
+
+export const createTracableSchema = (options: IGraphQLOptions) => {
   if (!options.context) {
     options.context = {};
   }
@@ -18,17 +25,8 @@ export const addResolverTraceExtension = (options: any) => {
 
   useResolverDecorator(schema, trace);
 
-  return useTraceExtension(options);
-};
-
-function useTraceExtension(options: IGraphQLOptions) {
-  options.extensions = ({ context }: IGraphQLRequestInfo) => ({
-    totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
-    traces: context[SYMBOL_TRACES],
-  });
-
   return options;
-}
+};
 
 function trace(
   fn: GraphQLFieldResolver<any, any, any>
