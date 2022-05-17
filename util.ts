@@ -1,6 +1,8 @@
 import type { GraphQLField, GraphQLSchema } from 'graphql';
 import type { IGraphQLNamedType } from './types';
 
+import { isIntrospectionType } from 'graphql';
+
 export const nsToMs = (nanoseconds: bigint) => {
   return Number(nanoseconds / BigInt(1000000));
 };
@@ -8,7 +10,10 @@ export const nsToMs = (nanoseconds: bigint) => {
 export function useResolverDecorator(schema: GraphQLSchema, fn: Function) {
   for (const typeName in schema.getTypeMap()) {
     const type = schema.getType(typeName) as IGraphQLNamedType;
-    applyResolverToType(type, fn);
+
+    if (!isIntrospectionType(type)) {
+      applyResolverToType(type, fn);
+    }
   }
 }
 
