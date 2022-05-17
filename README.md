@@ -1,6 +1,6 @@
-# graphql-request-trace
+# graphql-request-profiler
 
-Easy to use GraphQL performance analysis utility for tracing resolver execution time.
+Easy to use GraphQL performance analysis utility for profiling resolver execution time.
 
 ## Usage
 
@@ -51,4 +51,10 @@ See [full running example here](./examples/apollo/index.js)
 ## TODO
 
 - Activate via x-trace header
+  - Allow customization of this header name
+- Use more simple schema for examples
+  - Apollo example doesn't need makeExecutableSchema, just inline it
 - Investigate use w/ federation (is this even useful? does apollo's plugin replace the need for this?)
+- Typescript examples
+- Publishing (gh action?)
+- Naming: Trace or profile?

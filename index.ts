@@ -34,9 +34,11 @@ const addStartTime = (options: IGraphQLOptions) => {
 
 export const tracePlugin = {
   async serverWillStart(options: any) {
+    // TODO: type me
     createTraceableSchema(options);
   },
   async requestDidStart(options: any) {
+    // TODO: type me
     addStartTime(options);
 
     return {
