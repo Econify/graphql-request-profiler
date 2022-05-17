@@ -1,15 +1,23 @@
 {
   "name": "graphql-request-profiler",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "0.0.0",
+  "description": "GraphQL extension to trace resolver execution time",
+  "main": "index.ts",
+  "types": "types.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "prettier": "npx prettier --write"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "TBD",
   "dependencies": {
+    "graphql": "^16.5.0",
     "typescript": "^4.6.4"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.34",
+    "prettier": "^2.6.2"
   }
 }
