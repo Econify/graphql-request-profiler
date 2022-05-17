@@ -1,7 +1,7 @@
 {
   "name": "graphql-request-profiler",
   "version": "0.0.0",
-  "description": "GraphQL extension to trace resolver execution time",
+  "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "main": "index.ts",
   "types": "types.d.ts",
   "scripts": {
