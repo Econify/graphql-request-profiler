@@ -8,6 +8,10 @@ const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
 export const addResolverTraceExtension = (options: any) => {
+  if (!options.context) {
+    options.context = {};
+  }
+
   const { context, schema } = options;
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
