@@ -1,6 +1,4 @@
-import { trace } from '.';
-
-interface IResolverTrace {
+export interface IResolverTrace {
   execTimeMs: number; // The amount of time the resolver function call took
   execStartTimeMs: number; // The amount of time after the request began to when the resolver was called
   execEndTimeMs: number; // The amount of time after the request began to the resolver call finishing
@@ -8,25 +6,17 @@ interface IResolverTrace {
   parentType: string; // Type of parent the resolver was called for
 }
 
-interface IGraphQLOptions {
+export interface IGraphQLOptions {
   // TODO: type me
   schema: any;
   context: any;
   extensions: any;
 }
 
-interface IGraphQLRequestInfo {
-  context: IGraphQLContext;
+export interface IGraphQLRequestInfo {
+  context: any;
 }
 
-interface IGraphQLContext {
-  // TODO: type me
-  traces: Array<IResolverTrace>;
-  startTimeNs: bigint;
-}
-
-type IGraphQLNamedType = GraphQLNamedType & {
+export type IGraphQLNamedType = GraphQLNamedType & {
   getFields?: () => GraphQLInputFieldMap;
 };
-
-type IDecoratorFunction = typeof trace;
