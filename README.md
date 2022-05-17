@@ -27,11 +27,28 @@ app.use(
 
 See [full running example here](./examples/express-graphql/index.js)
 
-### Important Note
+#### Important Note
 
 This extension will modify the schema that is passed to it in the options. Please create a copy of the schema or rebuild it on every request to avoid affecting future requests.
 
+### apollo-server
+
+```js
+import { tracePlugin } from 'graphql-request-profiler';
+
+const server = new ApolloServer({
+  schema: buildSchema(),
+  plugins: [tracePlugin],
+});
+
+server.listen().then(({ url }) => {
+  console.log(`Listening on ${url}`);
+});
+```
+
+See [full running example here](./examples/apollo/index.js)
+
 ## TODO
 
-- Investigate use w/ apollo
-- Investigate use w/ federation
+- Activate via x-trace header
+- Investigate use w/ federation (is this even useful? does apollo's plugin replace the need for this?)

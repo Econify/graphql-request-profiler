@@ -1,6 +1,6 @@
 const { buildSchema } = require('./schema');
 
-const { getTraces, createTracableSchema } = require('../../dist');
+const { getTraces, createTraceableSchema } = require('../../dist');
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 
@@ -9,7 +9,7 @@ const app = express();
 app.use(
   '/graphql',
   graphqlHTTP(() =>
-    createTracableSchema({
+    createTraceableSchema({
       schema: buildSchema(),
       graphiql: true,
       extensions: ({ context }) => ({

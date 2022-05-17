@@ -14,18 +14,40 @@ export const getTraces = (context: IGraphQLOptions['context']) => {
   };
 };
 
-export const createTracableSchema = (options: IGraphQLOptions) => {
+export const createTraceableSchema = (options: IGraphQLOptions) => {
   if (!options.context) {
     options.context = {};
   }
 
-  const { context, schema } = options;
+  addStartTime(options);
 
-  context[SYMBOL_START_TIME] = process.hrtime.bigint();
-
-  useResolverDecorator(schema, trace);
+  useResolverDecorator(options.schema, trace);
 
   return options;
+};
+
+const addStartTime = (options: IGraphQLOptions) => {
+  const { context } = options;
+
+  context[SYMBOL_START_TIME] = process.hrtime.bigint();
+};
+
+export const tracePlugin = {
+  async serverWillStart(options: any) {
+    createTraceableSchema(options);
+  },
+  async requestDidStart(options: any) {
+    addStartTime(options);
+
+    return {
+      async willSendResponse(options: any) {
+        options.response.extensions = {
+          ...options.response.extensions,
+          ...getTraces(options.context),
+        };
+      },
+    };
+  },
 };
 
 function trace(
