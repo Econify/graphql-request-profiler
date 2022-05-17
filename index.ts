@@ -1,16 +1,19 @@
-import { responsePathAsArray } from 'graphql';
 import type { GraphQLFieldResolver } from 'graphql';
 import type { IGraphQLOptions, IGraphQLRequestInfo } from './types';
+
+import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
 
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
 export const addResolverTraceExtension = (options: any) => {
-  const timeBasis = process.hrtime.bigint();
-  useResolverDecorator(options.schema, trace);
+  const { context, schema } = options;
 
-  options[SYMBOL_START_TIME] = timeBasis;
+  context[SYMBOL_START_TIME] = process.hrtime.bigint();
+
+  useResolverDecorator(schema, trace);
+
   return useTraceExtension(options);
 };
 
@@ -36,14 +39,14 @@ function trace(
       context[SYMBOL_TRACES] = [];
     }
 
-    const timeMs = nsToMs(endTime - startTime);
+    const execTimeMs = nsToMs(endTime - startTime);
     const reqStartTime = context[SYMBOL_START_TIME];
 
-    if (timeMs > 0) {
+    if (execTimeMs > 0) {
       context[SYMBOL_TRACES].push({
+        execTimeMs,
         execStartTimeMs: nsToMs(startTime - reqStartTime),
         execEndTimeMs: nsToMs(endTime - reqStartTime),
-        execTimeMs: nsToMs(endTime - startTime),
         location: responsePathAsArray(info.path).join('.'),
         parentType: info.parentType.toString(),
       });
