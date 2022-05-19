@@ -11,12 +11,11 @@ import { nsToMs, useResolverDecorator } from './util';
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
-export const createProfilerOptions = (options: IGraphQLOptions) => {
+export function createProfilerOptions(options: IGraphQLOptions) {
   if (!options.context) {
     options.context = {};
   }
 
-  // Does this affect apollo?
   options.extensions = ({ context }: any) => ({
     ...getResolverTraces(context),
   });
@@ -26,11 +25,11 @@ export const createProfilerOptions = (options: IGraphQLOptions) => {
   useResolverDecorator(options.schema, trace);
 
   return options;
-};
+}
 
 export function createProfilerPlugin(options: IApolloPluginOptions) {
   return {
-    headerName: 'x-trace',
+    headerName: options?.headerName || 'x-trace',
 
     async serverWillStart(options: GraphQLServiceContext) {
       createApolloProfilerOptions(options);
@@ -57,23 +56,23 @@ export function createProfilerPlugin(options: IApolloPluginOptions) {
   };
 }
 
-export const createApolloProfilerOptions = (options: GraphQLServiceContext) => {
+function createApolloProfilerOptions(options: GraphQLServiceContext) {
   useResolverDecorator(options.schema, trace);
   return options;
-};
+}
 
-const getResolverTraces = (context: IGraphQLOptions['context']) => {
+function getResolverTraces(context: IGraphQLOptions['context']) {
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
   };
-};
+}
 
-const addStartTime = (options: IGraphQLOptions | GraphQLRequestContext) => {
+function addStartTime(options: IGraphQLOptions | GraphQLRequestContext) {
   const { context } = options;
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
-};
+}
 
 function trace(
   fn: GraphQLFieldResolver<any, any, any>
