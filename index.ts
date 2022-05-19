@@ -1,9 +1,10 @@
-import type { GraphQLFieldResolver } from 'graphql';
+import type { Context, IApolloPluginOptions, ResolverFunction } from './types';
 import type { OptionsData } from 'express-graphql';
-import type { IGraphQLOptions, IApolloPluginOptions } from './types';
 import type {
+  BaseContext,
   GraphQLServiceContext,
   GraphQLRequestContext,
+  GraphQLRequestContextWillSendResponse,
 } from 'apollo-server-types';
 
 import { responsePathAsArray } from 'graphql';
@@ -18,8 +19,8 @@ export function createProfilerOptions(options: OptionsData) {
   }
 
   // TODO: decorate this function so we don't truncate other extensions
-  options.extensions = ({ context }: any) => ({
-    ...getResolverTraces(context),
+  options.extensions = ({ context }) => ({
+    ...getResolverTraces(context as Context),
   });
 
   addStartTime(options);
@@ -46,7 +47,9 @@ export function createProfilerPlugin(options?: IApolloPluginOptions) {
         addStartTime(options);
 
         return {
-          async willSendResponse(options: any) {
+          async willSendResponse(
+            options: GraphQLRequestContextWillSendResponse<BaseContext>
+          ) {
             options.response.extensions = {
               ...options.response.extensions,
               ...getResolverTraces(options.context),
@@ -63,7 +66,7 @@ function createApolloProfilerOptions(options: GraphQLServiceContext) {
   return options;
 }
 
-function getResolverTraces(context: IGraphQLOptions['context']) {
+function getResolverTraces(context: Context) {
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
@@ -71,14 +74,13 @@ function getResolverTraces(context: IGraphQLOptions['context']) {
 }
 
 function addStartTime(options: OptionsData | GraphQLRequestContext) {
-  const { context } = options;
+  const { context } = options as { context: Context };
 
-  (context as any)[SYMBOL_START_TIME] = process.hrtime.bigint();
+  context[SYMBOL_START_TIME] = process.hrtime.bigint();
 }
 
-function trace(
-  fn: GraphQLFieldResolver<any, any, any>
-): GraphQLFieldResolver<any, any, any> {
+function trace(fn: ResolverFunction): ResolverFunction {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return async function (this: any, data, args, context, info) {
     const reqStartTime = context[SYMBOL_START_TIME];
 

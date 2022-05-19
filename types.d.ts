@@ -1,22 +1,23 @@
+import type { GraphQLFieldResolver } from 'graphql';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface IResolverTrace {
-  execTimeMs: number; // The amount of time the resolver function call took
-  execStartTimeMs: number; // The amount of time after the request began to when the resolver was called
-  execEndTimeMs: number; // The amount of time after the request began to the resolver call finishing
-  location: string; // Location in schema for this resolver
-  parentType: string; // Type of parent the resolver was called for
+  execTimeMs: number;
+  execStartTimeMs: number;
+  execEndTimeMs: number;
+  location: string;
+  parentType: string;
 }
 
-export interface IGraphQLOptions {
-  schema: any;
-  context: any;
-  extensions: any;
-  request?: any;
-}
-
-export type IGraphQLNamedType = GraphQLNamedType & {
+export type GraphQLNamedType = GraphQLNamedType & {
   getFields?: () => GraphQLInputFieldMap;
 };
 
 export interface IApolloPluginOptions {
   headerName?: string;
 }
+
+export type TraceFunction = (fn: ResolverFunction) => ResolverFunction;
+
+export type ResolverFunction = GraphQLFieldResolver<any, any, any>;
+
+export type Context = Record<symbol, any>;
