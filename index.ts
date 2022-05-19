@@ -7,13 +7,6 @@ import { nsToMs, useResolverDecorator } from './util';
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
-export const getResolverTraces = (context: IGraphQLOptions['context']) => {
-  return {
-    totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
-    traces: context[SYMBOL_TRACES],
-  };
-};
-
 export const createProfilerOptions = (options: IGraphQLOptions) => {
   if (!options.context) {
     options.context = {};
@@ -29,12 +22,6 @@ export const createProfilerOptions = (options: IGraphQLOptions) => {
   useResolverDecorator(options.schema, trace);
 
   return options;
-};
-
-const addStartTime = (options: IGraphQLOptions) => {
-  const { context } = options;
-
-  context[SYMBOL_START_TIME] = process.hrtime.bigint();
 };
 
 export function createProfilerPlugin(options: IApolloPluginOptions) {
@@ -69,6 +56,19 @@ export function createProfilerPlugin(options: IApolloPluginOptions) {
     },
   };
 }
+
+const getResolverTraces = (context: IGraphQLOptions['context']) => {
+  return {
+    totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
+    traces: context[SYMBOL_TRACES],
+  };
+};
+
+const addStartTime = (options: IGraphQLOptions) => {
+  const { context } = options;
+
+  context[SYMBOL_START_TIME] = process.hrtime.bigint();
+};
 
 function trace(
   fn: GraphQLFieldResolver<any, any, any>
