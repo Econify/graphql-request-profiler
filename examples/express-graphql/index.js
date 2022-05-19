@@ -1,22 +1,29 @@
 const { buildSchema } = require('./schema');
 
-const { getTraces, createTraceableSchema } = require('../../dist');
+const { createProfilerOptions } = require('../../dist');
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 
 const app = express();
+const schema = buildSchema();
 
 app.use(
   '/graphql',
-  graphqlHTTP(() =>
-    createTraceableSchema({
-      schema: buildSchema(),
+  graphqlHTTP((req) => {
+    const options = {
+      schema: schema,
       graphiql: true,
-      extensions: ({ context }) => ({
-        ...getTraces(context),
-      }),
-    })
-  )
+    }
+
+    if (req.headers['x-profiler-request'] === 'true') {
+      return createProfilerOptions({
+        ...options,
+        schema: buildSchema(),
+      });
+    }
+
+    return options;
+  })
 );
 
 app.listen(4000, () =>

@@ -7,17 +7,22 @@ import { nsToMs, useResolverDecorator } from './util';
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
-export const getTraces = (context: IGraphQLOptions['context']) => {
+export const getResolverTraces = (context: IGraphQLOptions['context']) => {
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
   };
 };
 
-export const createTraceableSchema = (options: IGraphQLOptions) => {
+export const createProfilerOptions = (options: IGraphQLOptions) => {
   if (!options.context) {
     options.context = {};
   }
+
+  // Does this affect apollo?
+  options.extensions = ({ context }: any) => ({
+    ...getResolverTraces(context),
+  });
 
   addStartTime(options);
 
@@ -38,7 +43,7 @@ export function createProfilerPlugin(options: IApolloPluginOptions) {
 
     // TODO: type me
     async serverWillStart(options: any) {
-      createTraceableSchema(options);
+      createProfilerOptions(options);
     },
 
     // TODO: type me
@@ -57,7 +62,7 @@ export function createProfilerPlugin(options: IApolloPluginOptions) {
         async willSendResponse(options: any) {
           options.response.extensions = {
             ...options.response.extensions,
-            ...getTraces(options.context),
+            ...getResolverTraces(options.context),
           };
         },
       };
