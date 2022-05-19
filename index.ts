@@ -73,16 +73,14 @@ const addStartTime = (options: IGraphQLOptions) => {
 function trace(
   fn: GraphQLFieldResolver<any, any, any>
 ): GraphQLFieldResolver<any, any, any> {
-  return async function (data, args, context, info) {
+  return async function (this: any, data, args, context, info) {
     const reqStartTime = context[SYMBOL_START_TIME];
 
     if (!reqStartTime) {
-      // @ts-ignore // TODO: fix me
       return fn.call(this, data, args, context, info);
     }
 
     const startTime = process.hrtime.bigint();
-    // @ts-ignore // TODO: fix me
     const result = await fn.call(this, data, args, context, info);
     const endTime = process.hrtime.bigint();
 
