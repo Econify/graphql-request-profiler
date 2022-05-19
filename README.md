@@ -47,9 +47,11 @@ See [full running example here](./examples/apollo/index.js)
 
 ## TODO
 
+- Turn examples into Typescript
+- Install eslint
+
 - Use more simple schema for examples
   - Apollo example doesn't need makeExecutableSchema, just inline it in example
 - Investigate use w/ federation (is this even useful? does apollo's plugin replace the need for this?)
-- Typescript examples
 - Publishing (gh action?)
 - Web visualizer

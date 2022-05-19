@@ -23,7 +23,7 @@
     "example:apollo": "node ./examples/apollo/index.js",
     "dev:apollo": "npx nodemon -i dist -e \"js ts\" -x \"npm run build && npm run example:apollo\""
   },
-  "peerDependencies": {
+  "dependencies": {
     "graphql": "^16.5.0"
   },
   "devDependencies": {

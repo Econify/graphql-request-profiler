@@ -16,6 +16,7 @@ export function createProfilerOptions(options: IGraphQLOptions) {
     options.context = {};
   }
 
+  // TODO: decorate this function so we don't truncate other extensions
   options.extensions = ({ context }: any) => ({
     ...getResolverTraces(context),
   });
