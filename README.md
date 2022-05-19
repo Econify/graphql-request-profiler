@@ -47,6 +47,7 @@ See [full running example here](./examples/apollo/index.js)
 
 ## TODO
 
-- Investigate use w/ federation (is this even useful? does apollo's plugin replace the need for this?)
-- Publishing (gh action?)
+- Investigate use w/ federation
+- Publishing flow
 - Web visualizer
+- Add tests
