@@ -19,6 +19,7 @@
     "build": "tsc",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
+    "clean-build": "rm *.js",
     "example:express": "ts-node ./examples/express-graphql/index.ts",
     "dev:express": "npx nodemon -e \"ts\" -x \"npm run example:express\"",
     "example:apollo": "ts-node ./examples/apollo/index.ts",
