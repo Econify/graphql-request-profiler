@@ -1,7 +1,0 @@
-type Soda {
-  sugar: Int
-}
-
-type Query {
-  dietCoke: Soda
-}

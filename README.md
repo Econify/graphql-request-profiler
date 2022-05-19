@@ -47,7 +47,6 @@ See [full running example here](./examples/apollo/index.js)
 
 ## TODO
 
-- Turn examples into Typescript
 - Install eslint
 
 - Use more simple schema for examples

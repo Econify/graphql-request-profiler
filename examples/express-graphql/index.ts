@@ -1,8 +1,8 @@
-const { buildSchema } = require('./schema');
-const { createProfilerOptions } = require('../../dist');
+import { buildSchema } from '../schema';
+import { createProfilerOptions } from '../../index';
 
-const express = require('express');
-const { graphqlHTTP } = require('express-graphql');
+import express from 'express';
+import { graphqlHTTP } from 'express-graphql';
 
 const app = express();
 const schema = buildSchema();
@@ -13,7 +13,7 @@ app.use(
     const options = {
       schema,
       graphiql: true,
-    }
+    };
 
     if (req.headers['x-trace'] === 'true') {
       return createProfilerOptions({

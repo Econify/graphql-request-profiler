@@ -18,10 +18,10 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "prettier": "npx prettier --write",
-    "example:express": "node ./examples/express-graphql/index.js",
-    "dev:express": "npx nodemon -i dist -e \"js ts\" -x \"npm run build && npm run example:express\"",
-    "example:apollo": "node ./examples/apollo/index.js",
-    "dev:apollo": "npx nodemon -i dist -e \"js ts\" -x \"npm run build && npm run example:apollo\""
+    "example:express": "ts-node ./examples/express-graphql/index.ts",
+    "dev:express": "npx nodemon -e \"ts\" -x \"npm run example:express\"",
+    "example:apollo": "ts-node ./examples/apollo/index.ts",
+    "dev:apollo": "npx nodemon -e \"ts\" -x \"npm run example:apollo\""
   },
   "dependencies": {
     "graphql": "^16.5.0"
@@ -34,6 +34,7 @@
     "express": "^4.18.1",
     "express-graphql": "^0.12.0",
     "prettier": "^2.6.2",
+    "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
   }
 }

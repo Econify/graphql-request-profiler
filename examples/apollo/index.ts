@@ -1,6 +1,6 @@
-const { ApolloServer } = require('apollo-server');
-const { buildSchema } = require('./schema');
-const { createProfilerPlugin } = require('../../dist');
+import { ApolloServer } from 'apollo-server';
+import { buildSchema } from '../schema';
+import { createProfilerPlugin } from '../../index';
 
 const server = new ApolloServer({
   schema: buildSchema(),

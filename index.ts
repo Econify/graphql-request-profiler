@@ -1,4 +1,5 @@
 import type { GraphQLFieldResolver } from 'graphql';
+import type { OptionsData } from 'express-graphql';
 import type { IGraphQLOptions, IApolloPluginOptions } from './types';
 import type {
   GraphQLServiceContext,
@@ -11,7 +12,7 @@ import { nsToMs, useResolverDecorator } from './util';
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
 
-export function createProfilerOptions(options: IGraphQLOptions) {
+export function createProfilerOptions(options: OptionsData) {
   if (!options.context) {
     options.context = {};
   }
@@ -28,7 +29,7 @@ export function createProfilerOptions(options: IGraphQLOptions) {
   return options;
 }
 
-export function createProfilerPlugin(options: IApolloPluginOptions) {
+export function createProfilerPlugin(options?: IApolloPluginOptions) {
   return {
     headerName: options?.headerName || 'x-trace',
 
@@ -69,10 +70,10 @@ function getResolverTraces(context: IGraphQLOptions['context']) {
   };
 }
 
-function addStartTime(options: IGraphQLOptions | GraphQLRequestContext) {
+function addStartTime(options: OptionsData | GraphQLRequestContext) {
   const { context } = options;
 
-  context[SYMBOL_START_TIME] = process.hrtime.bigint();
+  (context as any)[SYMBOL_START_TIME] = process.hrtime.bigint();
 }
 
 function trace(
