@@ -1,0 +1,12 @@
+node_modules/**/*
+examples/**/*
+test/**/*
+
+*.ts
+!types.d.ts
+
+yarn.lock
+.eslintrc.json
+.gitignore
+.prettierrc
+tsconfig.json
