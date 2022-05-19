@@ -1,5 +1,5 @@
-import type { GraphQLFieldResolver } from 'graphql';
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { GraphQLFieldResolver } from 'graphql';
 export interface IResolverTrace {
   execTimeMs: number;
   execStartTimeMs: number;
