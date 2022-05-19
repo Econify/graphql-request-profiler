@@ -13,7 +13,7 @@ const app = express();
 
 app.use(
   '/graphql',
-  graphqlHTTP(() =>
+  graphqlHTTP(
     createProfilerOptions({
       schema: buildSchema(),
       graphiql: true,
