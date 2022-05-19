@@ -1,5 +1,9 @@
 import type { GraphQLFieldResolver } from 'graphql';
 import type { IGraphQLOptions, IApolloPluginOptions } from './types';
+import type {
+  GraphQLServiceContext,
+  GraphQLRequestContext,
+} from 'apollo-server-types';
 
 import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
@@ -28,34 +32,35 @@ export function createProfilerPlugin(options: IApolloPluginOptions) {
   return {
     headerName: 'x-trace',
 
-    // TODO: type me
-    async serverWillStart(options: any) {
-      createProfilerOptions(options);
+    async serverWillStart(options: GraphQLServiceContext) {
+      createApolloProfilerOptions(options);
     },
 
-    // TODO: type me
-    async requestDidStart(options: any) {
+    async requestDidStart(options: GraphQLRequestContext) {
       if (options?.request?.operationName === 'IntrospectionQuery') {
         return;
       }
 
-      if (options?.request?.http.headers.get(this.headerName) !== 'true') {
-        return;
+      if (options?.request?.http?.headers.get(this.headerName) === 'true') {
+        addStartTime(options);
+
+        return {
+          async willSendResponse(options: any) {
+            options.response.extensions = {
+              ...options.response.extensions,
+              ...getResolverTraces(options.context),
+            };
+          },
+        };
       }
-
-      addStartTime(options);
-
-      return {
-        async willSendResponse(options: any) {
-          options.response.extensions = {
-            ...options.response.extensions,
-            ...getResolverTraces(options.context),
-          };
-        },
-      };
     },
   };
 }
+
+export const createApolloProfilerOptions = (options: GraphQLServiceContext) => {
+  useResolverDecorator(options.schema, trace);
+  return options;
+};
 
 const getResolverTraces = (context: IGraphQLOptions['context']) => {
   return {
@@ -64,7 +69,7 @@ const getResolverTraces = (context: IGraphQLOptions['context']) => {
   };
 };
 
-const addStartTime = (options: IGraphQLOptions) => {
+const addStartTime = (options: IGraphQLOptions | GraphQLRequestContext) => {
   const { context } = options;
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
