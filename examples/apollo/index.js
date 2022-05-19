@@ -1,10 +1,10 @@
 const { ApolloServer } = require('apollo-server');
 const { buildSchema } = require('./schema');
-const { tracePlugin } = require('../../dist');
+const { createProfilerPlugin } = require('../../dist');
 
 const server = new ApolloServer({
   schema: buildSchema(),
-  plugins: [tracePlugin],
+  plugins: [createProfilerPlugin()],
 });
 
 server.listen().then(({ url }) => {

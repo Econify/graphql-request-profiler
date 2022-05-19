@@ -10,8 +10,13 @@ export interface IGraphQLOptions {
   schema: any;
   context: any;
   extensions: any;
+  request?: any;
 }
 
 export type IGraphQLNamedType = GraphQLNamedType & {
   getFields?: () => GraphQLInputFieldMap;
 };
+
+export interface IApolloPluginOptions {
+  headerName?: string;
+}

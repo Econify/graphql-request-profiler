@@ -52,9 +52,13 @@ See [full running example here](./examples/apollo/index.js)
 
 - Activate via x-trace header
   - Allow customization of this header name
+  - Apollo plugin config
+  - Express-graphql config
+- Fix types
 - Use more simple schema for examples
   - Apollo example doesn't need makeExecutableSchema, just inline it
 - Investigate use w/ federation (is this even useful? does apollo's plugin replace the need for this?)
 - Typescript examples
 - Publishing (gh action?)
 - Naming: Trace or profile?
+- Web visualizer

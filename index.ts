@@ -1,5 +1,5 @@
 import type { GraphQLFieldResolver } from 'graphql';
-import type { IGraphQLOptions } from './types';
+import type { IGraphQLOptions, IApolloPluginOptions } from './types';
 
 import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
@@ -32,30 +32,50 @@ const addStartTime = (options: IGraphQLOptions) => {
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
 };
 
-export const tracePlugin = {
-  async serverWillStart(options: any) {
-    // TODO: type me
-    createTraceableSchema(options);
-  },
-  async requestDidStart(options: any) {
-    // TODO: type me
-    addStartTime(options);
+export function createProfilerPlugin(options: IApolloPluginOptions) {
+  return {
+    headerName: 'x-profile-request',
 
-    return {
-      async willSendResponse(options: any) {
-        options.response.extensions = {
-          ...options.response.extensions,
-          ...getTraces(options.context),
-        };
-      },
-    };
-  },
-};
+    // TODO: type me
+    async serverWillStart(options: any) {
+      createTraceableSchema(options);
+    },
+
+    // TODO: type me
+    async requestDidStart(options: any) {
+      if (options?.request?.operationName === 'IntrospectionQuery') {
+        return;
+      }
+
+      if (options?.request?.http.headers.get(this.headerName) !== 'true') {
+        return;
+      }
+
+      addStartTime(options);
+
+      return {
+        async willSendResponse(options: any) {
+          options.response.extensions = {
+            ...options.response.extensions,
+            ...getTraces(options.context),
+          };
+        },
+      };
+    },
+  };
+}
 
 function trace(
   fn: GraphQLFieldResolver<any, any, any>
 ): GraphQLFieldResolver<any, any, any> {
   return async function (data, args, context, info) {
+    const reqStartTime = context[SYMBOL_START_TIME];
+
+    if (!reqStartTime) {
+      // @ts-ignore // TODO: fix me
+      return fn.call(this, data, args, context, info);
+    }
+
     const startTime = process.hrtime.bigint();
     // @ts-ignore // TODO: fix me
     const result = await fn.call(this, data, args, context, info);
@@ -66,7 +86,6 @@ function trace(
     }
 
     const execTimeMs = nsToMs(endTime - startTime);
-    const reqStartTime = context[SYMBOL_START_TIME];
 
     if (execTimeMs > 0) {
       context[SYMBOL_TRACES].push({
