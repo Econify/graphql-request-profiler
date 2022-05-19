@@ -31,7 +31,7 @@ This extension will modify the schema that is passed to it in the options. Pleas
 ### apollo-server
 
 ```js
-import { tracePlugin } from 'graphql-request-profiler';
+import { createProfilerPlugin } from 'graphql-request-profiler';
 
 const server = new ApolloServer({
   schema: buildSchema(),

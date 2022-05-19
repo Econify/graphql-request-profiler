@@ -26,7 +26,7 @@ export const createProfilerOptions = (options: IGraphQLOptions) => {
 
 export function createProfilerPlugin(options: IApolloPluginOptions) {
   return {
-    headerName: 'x-profile-request',
+    headerName: 'x-trace',
 
     // TODO: type me
     async serverWillStart(options: any) {

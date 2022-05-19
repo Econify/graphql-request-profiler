@@ -1,6 +1,6 @@
 const { buildSchema } = require('./schema');
-
 const { createProfilerOptions } = require('../../dist');
+
 const express = require('express');
 const { graphqlHTTP } = require('express-graphql');
 
@@ -11,11 +11,11 @@ app.use(
   '/graphql',
   graphqlHTTP((req) => {
     const options = {
-      schema: schema,
+      schema,
       graphiql: true,
     }
 
-    if (req.headers['x-profiler-request'] === 'true') {
+    if (req.headers['x-trace'] === 'true') {
       return createProfilerOptions({
         ...options,
         schema: buildSchema(),
