@@ -1,7 +1,7 @@
-type Soda {
+type DietCoke {
   sugar: Int
 }
 
 type Query {
-  dietCoke: Soda
+  sodas: [DietCoke]
 }

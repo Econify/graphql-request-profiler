@@ -7,13 +7,16 @@ export const buildSchema = () => {
     typeDefs: readFileSync(join(__dirname, 'schema.graphql')).toString(),
     resolvers: {
       Query: {
-        dietCoke: async () => {
-          await new Promise((res) => setTimeout(res, 2000));
-          return { sugar: 0 };
+        sodas: async () => {
+          await new Promise((res) => setTimeout(res, Math.random() * 1000));
+          return [{}, {}, {}, {}, {}];
         },
       },
-      Soda: {
-        sugar: () => 0,
+      DietCoke: {
+        sugar: async () => {
+          await new Promise((res) => setTimeout(res, Math.random() * 1000));
+          return 0;
+        },
       },
     },
   });
