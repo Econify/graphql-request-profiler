@@ -254,7 +254,7 @@ function waterfall(attachTo, data) {
   const barHeight = d3.min([50, svgHeight / data.length]);
   const leftMargin = 160;
   const lineHeight = data.length * barHeight;
-  const colorScale = d3.scale.category10();
+  const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
   var tooltip = d3
     .select(attachTo)
@@ -274,8 +274,8 @@ function waterfall(attachTo, data) {
     .attr('height', svgHeight);
 
   // Set the x-axis scale
-  var x = d3.scale
-    .linear()
+  var x = d3
+    .scaleLinear()
     .domain([0, maxData + 20])
     .range(['0px', `${svgWidth - leftMargin}px`]);
 
@@ -312,16 +312,16 @@ function waterfall(attachTo, data) {
       return colorScale(i);
     })
     .attr('height', barHeight)
-    .on('mouseover', function (d) {
+    .on('mouseover', function (event, d) {
       d3.selectAll('.rectWF').style('opacity', 0.2);
       d3.select(this).style('opacity', 1);
       return tooltip.style('opacity', 1).text(JSON.stringify(d, null, 2));
     })
-    .on('mousemove', function () {
+    .on('mousemove', function (event) {
       return tooltip
         .style('opacity', 1)
-        .style('top', d3.event.pageY + 20 + 'px')
-        .style('left', d3.event.pageX + 'px');
+        .style('top', event.pageY + 20 + 'px')
+        .style('left', event.pageX + 'px');
     })
     .on('mouseout', function () {
       d3.selectAll('.rectWF').style('opacity', 1);
