@@ -26,6 +26,7 @@
     "dev:apollo": "npx nodemon -e \"ts\" -x \"npm run example:apollo\""
   },
   "dependencies": {
+    "axios": "^0.27.2",
     "command-line-args": "^5.2.1",
     "graphql": "^16.5.0"
   },
