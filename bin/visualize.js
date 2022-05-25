@@ -3,23 +3,35 @@
 /* eslint-disable no-undef */
 
 const commandLineArgs = require('command-line-args');
+const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const childProcess = require('child_process');
-const axios = require('axios');
+
+function getOpenCommand() {
+  switch (process.platform) {
+    case 'darwin':
+      return 'open';
+    case 'win32':
+      return 'start';
+    default:
+      // Take an educated guess for Linux
+      return 'xdg-open';
+  }
+}
 
 function openUrl(url) {
-  var start = (process.platform == 'darwin' ? 'open' : process.platform == 'win32' ? 'start' : 'xdg-open');
-  childProcess.exec(`${start} ${url}`);
+  const openCmd = getOpenCommand()
+  childProcess.exec(`${openCmd} ${url}`);
 }
 
 async function makeRequestAndOpenData(options) {
-  const schemaContents = fs.readFileSync(options.schema).toString();
-
   const data = {
-    operationName: options.operationName,
-    query: schemaContents,
-    variables: {}
+    query: fs.readFileSync(options.schema).toString(),
+  }
+
+  if (options.operationName) {
+    data.operationName = options.operationName;
   }
 
   if (options.variables) {
@@ -36,8 +48,11 @@ async function makeRequestAndOpenData(options) {
         'x-trace': 'true',
       }
     });
-    fs.writeFileSync('tmp.json', JSON.stringify(response.data.extensions.traces))
-    openData({ data: 'tmp.json' })
+
+    // TODO: better place to store this?
+    const tmpFileName = `tmp-${Math.random().toString().replace('.', '')}.json`;
+    fs.writeFileSync(tmpFileName, JSON.stringify(response.data.extensions.traces))
+    openData({ dataRaw: JSON.stringify(response.data.extensions.traces) })
   } catch (e) {
     console.error(e.message)
     console.error(e.response.data)
@@ -77,8 +92,6 @@ const options = commandLineArgs([
     process.exit(0);
   }
 
-  if (options.help) {
-    printHelp();
-    process.exit(0);
-  }
+  printHelp();
+  process.exit(0);
 })()

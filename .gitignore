@@ -1,4 +1,4 @@
 node_modules
 *.js
-!viz/*.js
+!viz/chart.js
 !bin/*.js
