@@ -49,17 +49,19 @@ async function makeRequestAndOpenData(options) {
       }
     });
 
-    // TODO: better place to store this?
+    // TODO: allow custom output file name in options, use tmp if doesn't exist
     const tmpFileName = `tmp-${Math.random().toString().replace('.', '')}.json`;
     fs.writeFileSync(tmpFileName, JSON.stringify(response.data.extensions.traces))
     openData({ data: tmpFileName })
   } catch (e) {
     console.error(e.message)
+    // TODO: not every error has response, only show if it exists
     console.error(e.response.data)
   }
 }
 
 function printHelp() {
+  // TODO: implement help menu text
   console.log('Help menu coming soon :)')
 }
 
