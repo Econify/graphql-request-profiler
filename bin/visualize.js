@@ -35,6 +35,7 @@ async function makeRequestAndOpenData(options) {
   }
 
   if (options.variables) {
+    // TODO: test me
     const variables = fs.readFileSync(options.variables).toString();
     data.variables = JSON.parse(variables);
   }
@@ -48,6 +49,9 @@ async function makeRequestAndOpenData(options) {
         'x-trace': 'true',
       }
     });
+
+    // TODO: print error if no extensions.traces field
+    // msg: "No traces found, is the plugin installed properly?"
 
     // TODO: allow custom output file name in options, use tmp if doesn't exist
     const tmpFileName = `tmp-${Math.random().toString().replace('.', '')}.json`;

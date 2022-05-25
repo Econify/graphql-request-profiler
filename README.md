@@ -114,5 +114,6 @@ See [full running example here](./examples/apollo/index.js)
 
 - Web visualizer
   - Colors to represent how expensive a resolver is
+  - Add CLI examples
 - Tests
 - Investigate use w/ federation
