@@ -52,7 +52,7 @@ async function makeRequestAndOpenData(options) {
     // TODO: better place to store this?
     const tmpFileName = `tmp-${Math.random().toString().replace('.', '')}.json`;
     fs.writeFileSync(tmpFileName, JSON.stringify(response.data.extensions.traces))
-    openData({ dataRaw: JSON.stringify(response.data.extensions.traces) })
+    openData({ data: tmpFileName })
   } catch (e) {
     console.error(e.message)
     console.error(e.response.data)
