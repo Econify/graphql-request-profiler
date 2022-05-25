@@ -1,0 +1,29 @@
+body {
+  background-color: #33322e;
+  margin-left: 40px;
+}
+
+.waterfall {
+  fill: white;
+  font: 16px sans-serif;
+  background-color: #33322e;
+}
+
+.chart rect {
+  stroke: white;
+  fill: steelblue;
+}
+
+.bar {
+  pointer-events: none;
+}
+
+.tooltip {
+  background-color: #f4f3ef;
+  position: absolute;
+  opacity: 0;
+  padding: 8px 32px;
+  max-width: 400px;
+  background-color: black;
+  color: white;
+}

@@ -1,73 +1,87 @@
-function waterfall(attachTo, data) {
+/* eslint-disable no-undef */
+function waterfall(root, data) {
+  const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
   const maxData = Math.max(...data.map((d) => d.execEndTimeMs));
+  const leftMargin = 160;
   const svgHeight = 2000;
   const svgWidth = 1300;
   const numTicks = 10;
   const barHeight = d3.min([50, svgHeight / data.length]);
-  const leftMargin = 160;
   const lineHeight = data.length * barHeight;
-  const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
 
-  var tooltip = d3
-    .select(attachTo)
-    .append('div')
-    .style('position', 'absolute')
-    .style('opacity', 0)
-    .style('width', '400px')
-    .style('background-color', 'black')
-    .style('color', 'white');
+  const tooltip = d3.select(root).append('div').attr('class', 'tooltip');
 
-  // Append the chart and pad it a bit
-  var chart = d3
-    .select(attachTo)
+  const waterfall = d3
+    .select(root)
     .append('svg')
-    .attr('class', 'chart')
+    .attr('class', 'waterfall')
     .attr('width', svgWidth + leftMargin)
     .attr('height', svgHeight);
 
   // Set the x-axis scale
-  var x = d3
+  const x = d3
     .scaleLinear()
     .domain([0, maxData + 20])
     .range(['0px', `${svgWidth - leftMargin}px`]);
 
   // X-axis Label
-  chart
+  waterfall
     .append('g')
     .attr('transform', 'translate(' + svgWidth * 0.5 + ',15)')
-    .attr('class', 'gAxisLabel')
+    .attr('class', 'title')
     .append('text')
     .text('Time (ms)');
 
   // The main graph area
-  chart = chart
+  const waterfallArea = waterfall
     .append('g')
     .attr('transform', 'translate(' + leftMargin + ',30)')
     .attr('class', 'gMainGraphArea');
 
-  // Set the y-axis scale
-  chart
+  waterfallArea
     .append('g')
-    .attr('transform', 'translate(' + leftMargin + ',15)')
+    .attr('transform', `translate(${leftMargin},15)`)
+    .selectAll('line')
+    .data(x.ticks(numTicks))
+    .enter()
+    .append('line')
+    // .attr('class')
+    .attr('x1', x)
+    .attr('x2', x)
+    .attr('y1', 0)
+    .attr('y2', 0)
+    .transition()
+    .duration(1500)
+    .attr('y2', lineHeight)
+    .style('stroke', '#ccc');
+
+  // Create the bars
+  waterfallArea
+    .append('g')
+    .attr('transform', `translate(${leftMargin},15)`)
     .selectAll('rect')
     .data(data)
     .enter()
     .append('rect')
     .attr('class', 'rectWF')
-    .attr('x', function (d, i) {
+    .attr('x', function (d) {
       return x(d.execEndTimeMs - (d.execEndTimeMs - d.execStartTimeMs));
     })
-    .attr('y', function (d, i) {
+    .attr('y', function (_, i) {
       return i * barHeight;
     })
-    .style('fill', function (d, i) {
+    .style('fill', function (_, i) {
       return colorScale(i);
     })
     .attr('height', barHeight)
     .on('mouseover', function (event, d) {
       d3.selectAll('.rectWF').style('opacity', 0.2);
       d3.select(this).style('opacity', 1);
-      return tooltip.style('opacity', 1).text(JSON.stringify(d, null, 2));
+      return tooltip.style('opacity', 1).html(`
+      <div>${Object.keys(d)
+        .map((key) => '<p>' + key + ': ' + d[key] + '</p>')
+        .join('')}</div>
+      `);
     })
     .on('mousemove', function (event) {
       return tooltip
@@ -86,9 +100,9 @@ function waterfall(attachTo, data) {
     });
 
   // Set the values on the bars
-  chart
+  waterfallArea
     .append('g')
-    .attr('transform', 'translate(' + leftMargin + ',15)')
+    .attr('transform', `translate(${leftMargin},15)`)
     .selectAll('rect')
     .data(data)
     .enter()
@@ -102,32 +116,14 @@ function waterfall(attachTo, data) {
     .attr('y', function (d, i) {
       return i * barHeight + barHeight * 0.5;
     })
-    .style('pointer-events', 'none')
     .text(function (d) {
       return `${d.execEndTimeMs - d.execStartTimeMs}ms`;
     });
 
-  // Set the vertical lines for axis
-  chart
-    .append('g')
-    .attr('transform', 'translate(' + leftMargin + ',15)')
-    .selectAll('line')
-    .data(x.ticks(numTicks))
-    .enter()
-    .append('line')
-    .attr('x1', x)
-    .attr('x2', x)
-    .attr('y1', 0)
-    .attr('y2', 0)
-    .transition()
-    .duration(1500)
-    .attr('y2', lineHeight)
-    .style('stroke', '#ccc');
-
   // Set the numbering on the lines for axis
-  chart
+  waterfallArea
     .append('g')
-    .attr('transform', 'translate(' + leftMargin + ',15)')
+    .attr('transform', `translate(${leftMargin},15)`)
     .selectAll('.rule')
     .data(x.ticks(numTicks))
     .enter()
@@ -139,7 +135,7 @@ function waterfall(attachTo, data) {
     .attr('text-anchor', 'middle')
     .text(String);
 
-  const ll = chart.append('g').attr('class', 'gAxis');
+  const ll = waterfallArea.append('g').attr('class', 'gAxis');
 
   // Set the base line at the left-most corner
   ll.append('line')
