@@ -245,4 +245,11 @@ window.data = [
     location: 'page.zoneSets.1.zones.0.widgets.2.items.0.authors.0.image',
     parentType: 'Author',
   },
+  {
+    execStartTimeMs: 542,
+    execEndTimeMs: 3085,
+    execTimeMs: 2543,
+    location: 'muh.freedumb',
+    parentType: 'Amurica',
+  },
 ];

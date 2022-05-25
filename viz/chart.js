@@ -1,11 +1,19 @@
 /* eslint-disable no-undef */
+function createTooltipHtml(d) {
+  return `
+  <div>${Object.keys(d)
+    .map((key) => '<p>' + key + ': ' + d[key] + '</p>')
+    .join('')}</div>
+  `;
+}
+
 function waterfall(root, data) {
   const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
   const maxData = Math.max(...data.map((d) => d.execEndTimeMs));
-  const leftMargin = 160;
+  const leftMargin = 125;
   const svgHeight = 2000;
-  const svgWidth = 1300;
-  const numTicks = 10;
+  const svgWidth = maxData * 2;
+  const numTicks = svgWidth / 80;
   const barHeight = d3.min([50, svgHeight / data.length]);
   const lineHeight = data.length * barHeight;
 
@@ -45,11 +53,9 @@ function waterfall(root, data) {
     .data(x.ticks(numTicks))
     .enter()
     .append('line')
-    // .attr('class')
     .attr('x1', x)
     .attr('x2', x)
     .attr('y1', 0)
-    .attr('y2', 0)
     .transition()
     .duration(1500)
     .attr('y2', lineHeight)
@@ -74,14 +80,10 @@ function waterfall(root, data) {
       return colorScale(i);
     })
     .attr('height', barHeight)
-    .on('mouseover', function (event, d) {
+    .on('mouseover', function (_, d) {
       d3.selectAll('.rectWF').style('opacity', 0.2);
       d3.select(this).style('opacity', 1);
-      return tooltip.style('opacity', 1).html(`
-      <div>${Object.keys(d)
-        .map((key) => '<p>' + key + ': ' + d[key] + '</p>')
-        .join('')}</div>
-      `);
+      return tooltip.style('opacity', 1).html(createTooltipHtml(d));
     })
     .on('mousemove', function (event) {
       return tooltip
@@ -93,8 +95,6 @@ function waterfall(root, data) {
       d3.selectAll('.rectWF').style('opacity', 1);
       return tooltip.style('opacity', 0);
     })
-    // .transition()
-    // .duration(1000)
     .attr('width', function (d, i) {
       return x(d.execEndTimeMs - d.execStartTimeMs);
     });
@@ -135,17 +135,19 @@ function waterfall(root, data) {
     .attr('text-anchor', 'middle')
     .text(String);
 
-  const ll = waterfallArea.append('g').attr('class', 'gAxis');
+  const lineLabels = waterfallArea.append('g').attr('class', 'yLabels');
 
   // Set the base line at the left-most corner
-  ll.append('line')
+  lineLabels
+    .append('line')
     .attr('x1', leftMargin)
     .attr('x2', leftMargin)
     .attr('y1', 15)
     .attr('y2', 15 + lineHeight)
-    .style('stroke', '#000');
+    .style('stroke', '#ccc');
 
-  ll.selectAll('text')
+  lineLabels
+    .selectAll('text')
     .data(data)
     .enter()
     .append('text')
@@ -158,7 +160,11 @@ function waterfall(root, data) {
     .attr('text-anchor', 'end')
     .attr('alignment-baseline', 'middle')
     .text(function (d) {
-      return d.location;
+      const ellipsisText = d.location.length > 28 ? '...' : '';
+      return (
+        ellipsisText +
+        d.location.slice(d.location.length - 28, d.location.length)
+      );
     });
 }
 

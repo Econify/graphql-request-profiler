@@ -3,6 +3,11 @@ body {
   margin-left: 40px;
 }
 
+.yLabels text {
+  width: 110px;
+  word-wrap: normal;
+}
+
 .waterfall {
   fill: white;
   font: 16px sans-serif;
@@ -19,11 +24,11 @@ body {
 }
 
 .tooltip {
+  pointer-events: none;
   background-color: #f4f3ef;
   position: absolute;
   opacity: 0;
   padding: 8px 32px;
   max-width: 400px;
-  background-color: black;
-  color: white;
+  color: #33322e;
 }
