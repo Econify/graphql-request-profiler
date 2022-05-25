@@ -113,5 +113,6 @@ See [full running example here](./examples/apollo/index.js)
 ## TODO
 
 - Web visualizer
+  - Colors to represent how expensive a resolver is
 - Tests
 - Investigate use w/ federation

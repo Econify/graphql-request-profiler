@@ -4,6 +4,7 @@ Command to make request, with profiler enabled, take output and visualize in web
 
 ```bash
 graphql-request-profiler visualize --endpoint=localhost:4000/api/graphql --schema=schema.graphql --operation=GetPage --variables=vars.json
+graphql-request-profiler visualize --data=mydata.json
 ```
 
 ## Copy / Paste Usage
