@@ -11,8 +11,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
   const response = await requestGraphQL(requestBody, options);
 
   if (!response.data?.extensions?.traces) {
-    console.error('Error: No traces found, is the plugin installed properly?');
-    process.exit(1);
+    throw new Error('No traces found, is the plugin installed properly?');
   }
 
   const fileName =
@@ -54,16 +53,20 @@ const options = commandLineArgs([
 ]) as IOptionData;
 
 (async () => {
-  if (options.data) {
-    openData(options);
-    process.exit(0);
-  }
+  try {
+    if (options.data) {
+      openData(options);
+      process.exit(0);
+    }
 
-  if (options.schema && options.endpoint) {
-    await makeRequestAndOpenData(options);
-    process.exit(0);
-  }
+    if (options.schema && options.endpoint) {
+      await makeRequestAndOpenData(options);
+      process.exit(0);
+    }
 
-  printHelp();
-  process.exit(0);
+    printHelp();
+    process.exit(0);
+  } catch (e) {
+    console.error(`Error: ${(e as Error).message}`);
+  }
 })();

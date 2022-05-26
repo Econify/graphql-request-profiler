@@ -65,6 +65,6 @@ See [full running example here](./examples/apollo/index.js)
 ## TODO
 
 - Tests
-- Better error handling
 - Web visualizer colors to represent how expensive a resolver is
+- Github action release flow
 - Investigate use w/ federation

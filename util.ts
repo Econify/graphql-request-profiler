@@ -1,4 +1,4 @@
-import type { AxiosError, AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 import type { GraphQLField, GraphQLSchema } from 'graphql';
 import type {
   GraphQLNamedType,
@@ -64,26 +64,14 @@ export async function requestGraphQL(
   data: IGraphQLRequestData,
   options: IOptionData
 ): Promise<AxiosResponse<IGraphQLResponse>> {
-  try {
-    return axios({
-      method: 'POST',
-      url: options.endpoint,
-      data,
-      headers: {
-        'x-trace': 'true',
-      },
-    });
-  } catch (e) {
-    const error = <AxiosError>e;
-
-    if (error?.response?.data) {
-      console.error(error.response.data);
-    } else {
-      console.error(error.message);
-    }
-
-    throw e;
-  }
+  return axios({
+    method: 'POST',
+    url: options.endpoint,
+    data,
+    headers: {
+      'x-trace': 'true',
+    },
+  });
 }
 
 async function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
