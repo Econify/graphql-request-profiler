@@ -228,6 +228,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/command-line-args@^5.2.0":
+  version "5.2.0"
+  resolved "https://registry.yarnpkg.com/@types/command-line-args/-/command-line-args-5.2.0.tgz#adbb77980a1cc376bb208e3f4142e907410430f6"
+  integrity sha512-UuKzKpJJ/Ief6ufIaIzr3A/0XnluX7RvFgwkV89Yzvm77wCh1kFaFmqN8XEnGcN62EuHdedQjEMb8mYxFLGPyA==
+
 "@types/connect@*":
   version "3.4.35"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.35.tgz#5fcf6ae445e4021d1fc2219a4873cc73a3bb2ad1"

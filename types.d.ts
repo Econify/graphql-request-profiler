@@ -21,3 +21,19 @@ export type TraceFunction = (fn: ResolverFunction) => ResolverFunction;
 export type ResolverFunction = GraphQLFieldResolver<any, any, any>;
 
 export type Context = Record<symbol, any>;
+
+export interface IGraphQLRequestData {
+  query: string;
+  operationName?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  variables?: Record<string, any>;
+}
+
+export interface IOptionData {
+  endpoint: string;
+  schema: string;
+  operationName: string;
+  variables: string;
+  data: string;
+  help: boolean;
+}
