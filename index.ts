@@ -1,5 +1,5 @@
 import type { Context, IApolloPluginOptions, ResolverFunction } from './types';
-import type { OptionsData } from 'express-graphql';
+import type { OptionsData, RequestInfo } from 'express-graphql';
 import type {
   BaseContext,
   GraphQLServiceContext,
@@ -18,10 +18,7 @@ export function createProfilerOptions(options: OptionsData) {
     options.context = {};
   }
 
-  // TODO: decorate this function so we don't truncate other extensions
-  options.extensions = ({ context }) => ({
-    ...getResolverTraces(context as Context),
-  });
+  options.extensions = decorateExtensions(options.extensions);
 
   addStartTime(options);
 
@@ -77,6 +74,20 @@ function addStartTime(options: OptionsData | GraphQLRequestContext) {
   const { context } = options as { context: Context };
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
+}
+
+function decorateExtensions(fn: OptionsData['extensions']) {
+  if (fn) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return function (this: any, info: RequestInfo) {
+      const baseExtensionsData = fn.call(this, info);
+      const { context } = info;
+      return {
+        ...baseExtensionsData,
+        ...getResolverTraces(context as Context),
+      };
+    };
+  }
 }
 
 function trace(fn: ResolverFunction): ResolverFunction {
