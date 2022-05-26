@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import childProcess from 'child_process';
 import { IGraphQLRequestData, IOptionData } from './types';
+import { helpText } from './help';
 
 function getOpenCommand() {
   switch (process.platform) {
@@ -68,8 +69,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
 }
 
 function printHelp() {
-  // TODO: implement help menu text
-  console.log('Help menu coming soon :)');
+  console.log(helpText());
 }
 
 function openData(options: IOptionData) {
