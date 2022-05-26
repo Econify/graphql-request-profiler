@@ -9,7 +9,7 @@ import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
 async function makeRequestAndOpenData(options: IOptionData) {
   const response = await requestGraphQL(getRequestBody(options), options);
 
-  if (response.data?.extensions?.traces) {
+  if (!response.data?.extensions?.traces) {
     console.error('Error: No traces found, is the plugin installed properly?');
     process.exit(1);
   }
@@ -27,13 +27,16 @@ async function makeRequestAndOpenData(options: IOptionData) {
 }
 
 function openData(options: IOptionData) {
-  const pathToWrite = path.join(__dirname, '..', 'viz/data.js');
+  const pathToWrite = path.join(__dirname, 'viz/data.js');
 
   const dataContents = fs.readFileSync(options.data).toString();
+
+  console.log('Writing file contents');
   fs.writeFileSync(
     pathToWrite,
     `/* eslint-disable no-undef */\nwindow.data = ${dataContents}`
   );
+  console.log('opening url');
 
   openUrl(path.join(__dirname, '..', 'viz/index.html'));
 }

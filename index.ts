@@ -18,9 +18,7 @@ export function createProfilerOptions(options: OptionsData) {
     options.context = {};
   }
 
-  if (options.extensions) {
-    options.extensions = decorateExtensions(options.extensions);
-  }
+  options.extensions = decorateExtensions(options.extensions);
 
   addStartTime(options);
 
