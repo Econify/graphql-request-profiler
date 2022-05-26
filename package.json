@@ -17,7 +17,7 @@
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && chmod +x visualize.js",
+    "build": "tsc && chmod +x cli.js",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
     "clean-build": "rm *.js",
