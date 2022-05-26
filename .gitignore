@@ -2,3 +2,4 @@ node_modules
 *.js
 !viz/chart.js
 !bin/*.js
+tmp-*.json
