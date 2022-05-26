@@ -4,7 +4,7 @@ Easy to use GraphQL performance analysis utility for profiling resolver executio
 
 ## Example
 
-```
+```sh
 graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/graphql
 ```
 
@@ -12,7 +12,7 @@ graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/
 
 To try this sample yourself, you can pull down the repository and run
 
-```
+```sh
 yarn
 yarn build
 yarn dev:express &
