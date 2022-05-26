@@ -38,3 +38,8 @@ export interface IOptionData {
   data: string;
   help: boolean;
 }
+
+interface IGraphQLResponse {
+  data: any;
+  extensions?: ReturnType<typeof getResolverTraces>;
+}

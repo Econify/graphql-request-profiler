@@ -1,8 +1,9 @@
-import type { AxiosError } from 'axios';
+import type { AxiosError, AxiosResponse } from 'axios';
 import type { GraphQLField, GraphQLSchema } from 'graphql';
 import type {
   GraphQLNamedType,
   IGraphQLRequestData,
+  IGraphQLResponse,
   IOptionData,
   TraceFunction,
 } from './types';
@@ -11,6 +12,8 @@ import { isIntrospectionType } from 'graphql';
 import childProcess from 'child_process';
 import axios from 'axios';
 import fs from 'fs';
+
+import { helpText } from './help';
 
 export const nsToMs = (nanoseconds: bigint) => {
   return Number(nanoseconds / BigInt(1000000));
@@ -60,7 +63,7 @@ export function openUrl(url: string) {
 export async function requestGraphQL(
   data: IGraphQLRequestData,
   options: IOptionData
-) {
+): Promise<AxiosResponse<IGraphQLResponse>> {
   try {
     return axios({
       method: 'POST',
@@ -102,4 +105,8 @@ export function getRequestBody(options: IOptionData) {
   }
 
   return data;
+}
+
+export function printHelp() {
+  console.log(helpText());
 }

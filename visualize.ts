@@ -4,13 +4,12 @@ import commandLineArgs from 'command-line-args';
 import fs from 'fs';
 import path from 'path';
 import { IOptionData } from './types';
-import { helpText } from './help';
-import { getRequestBody, openUrl, requestGraphQL } from './util';
+import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
 
 async function makeRequestAndOpenData(options: IOptionData) {
   const response = await requestGraphQL(getRequestBody(options), options);
 
-  if (response.data.extensions.traces) {
+  if (response.data?.extensions?.traces) {
     console.error('Error: No traces found, is the plugin installed properly?');
     process.exit(1);
   }
@@ -25,10 +24,6 @@ async function makeRequestAndOpenData(options: IOptionData) {
   if (!options.output) {
     fs.rmSync(fileName);
   }
-}
-
-function printHelp() {
-  console.log(helpText());
 }
 
 function openData(options: IOptionData) {
