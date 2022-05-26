@@ -16,7 +16,7 @@ To try this sample yourself, you can pull down the repository and run
 yarn
 yarn build
 yarn dev:express &
-./visualize.js -s examples/operation.graphql -e http://localhost:4000/graphql
+./cli.js -s examples/operation.graphql -e http://localhost:4000/graphql
 ```
 
 ## Installation
