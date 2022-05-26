@@ -25,7 +25,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
   await openData({ data: fileName } as IOptionData);
 
   if (!options.output) {
-    fs.rmSync(fileName);
+    await fs.promises.rm(fileName);
   }
 }
 
