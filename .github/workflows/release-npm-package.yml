@@ -12,23 +12,8 @@ on:
       - created
 
 jobs:
-  build_bundle:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile
-
-      - name: Run Unit Tests
-        run: yarn test
-
-      - name: Run package
-        run: yarn build
-
   publish_npm_package:
     name: Create Release
-    needs: [build_bundle]
     runs-on: ubuntu-latest
     outputs:
       NEW_TAG: ${{ steps.version.outputs.NEW_TAG }}
@@ -42,6 +27,15 @@ jobs:
         with:
           node-version: '16.x'
           registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Unit Tests
+        run: yarn test
+
+      - name: Run package
+        run: yarn build
 
       - name: Automated Version Bump
         uses: phips28/gh-action-bump-version@master
