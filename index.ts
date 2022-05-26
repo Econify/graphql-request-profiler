@@ -78,7 +78,7 @@ function addStartTime(options: OptionsData | GraphQLRequestContext) {
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
 }
 
-function decorateExtensions(fn: OptionsData['extensions']) {
+function decorateExtensions(fn?: OptionsData['extensions']) {
   if (fn) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return function (this: any, info: RequestInfo) {
@@ -90,6 +90,10 @@ function decorateExtensions(fn: OptionsData['extensions']) {
       };
     };
   }
+
+  return ({ context }: RequestInfo) => ({
+    ...getResolverTraces(context as Context),
+  });
 }
 
 function trace(fn: ResolverFunction): ResolverFunction {
