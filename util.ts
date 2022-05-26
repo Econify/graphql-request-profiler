@@ -69,7 +69,7 @@ export async function requestGraphQL(
     url: options.endpoint,
     data,
     headers: {
-      'x-trace': 'true',
+      [options.headerName || 'x-trace']: 'true',
     },
   });
 }

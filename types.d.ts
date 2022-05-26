@@ -37,6 +37,7 @@ export interface IOptionData {
   output: string;
   data: string;
   help: boolean;
+  headerName: string;
 }
 
 interface IGraphQLResponse {

@@ -49,6 +49,7 @@ const options = commandLineArgs([
   { name: 'operationName', alias: 'n', type: String },
   { name: 'variables', alias: 'v', type: String },
   { name: 'data', alias: 'd', type: String },
+  { name: 'headerName', alias: 'h', type: String },
   { name: 'help', type: Boolean },
 ]) as IOptionData;
 

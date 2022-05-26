@@ -11,10 +11,12 @@ Usage:
 
 Arguments:
 
-  --data, -d (string)             display an existing trace file
   --schema, -s (file path)        requesting schema file location
   --output, -o (file path)        output request data to file location
-  --operationName, -n (string)    optional, name of the operation to use in the schema
   --endpoint, -e (string)         the endpoint of the GraphQL server to request
+  --operationName, -n (string)    optional, name of the operation to use in the schema
+  --headerName, -h (string)       optional, the name of the header to activate 
+
+  --data, -d (string)             display an existing trace file
   --help (boolean)                displays this help text\n`;
 }
