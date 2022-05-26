@@ -7,7 +7,8 @@ import { IOptionData } from './types';
 import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
 
 async function makeRequestAndOpenData(options: IOptionData) {
-  const response = await requestGraphQL(getRequestBody(options), options);
+  const requestBody = await getRequestBody(options);
+  const response = await requestGraphQL(requestBody, options);
 
   if (!response.data?.extensions?.traces) {
     console.error('Error: No traces found, is the plugin installed properly?');
@@ -17,28 +18,29 @@ async function makeRequestAndOpenData(options: IOptionData) {
   const fileName =
     options.output || `tmp-${Math.random().toString().replace('.', '')}.json`;
 
-  fs.writeFileSync(fileName, JSON.stringify(response.data.extensions.traces));
+  await fs.promises.writeFile(
+    fileName,
+    JSON.stringify(response.data.extensions.traces)
+  );
 
-  openData({ data: fileName } as IOptionData);
+  await openData({ data: fileName } as IOptionData);
 
   if (!options.output) {
     fs.rmSync(fileName);
   }
 }
 
-function openData(options: IOptionData) {
+async function openData(options: IOptionData) {
   const pathToWrite = path.join(__dirname, 'viz/data.js');
 
-  const dataContents = fs.readFileSync(options.data).toString();
+  const dataContents = await fs.promises.readFile(options.data);
 
-  console.log('Writing file contents');
-  fs.writeFileSync(
+  await fs.promises.writeFile(
     pathToWrite,
-    `/* eslint-disable no-undef */\nwindow.data = ${dataContents}`
+    `/* eslint-disable no-undef */\nwindow.data = ${dataContents.toString()}`
   );
-  console.log('opening url');
 
-  openUrl(path.join(__dirname, '..', 'viz/index.html'));
+  openUrl(path.join(__dirname, 'viz/index.html'));
 }
 
 const options = commandLineArgs([

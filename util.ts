@@ -86,14 +86,14 @@ export async function requestGraphQL(
   }
 }
 
-function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
-  const variables = fs.readFileSync(options.variables).toString();
+async function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
+  const variables = await fs.promises.readFile(options.variables).toString();
   data.variables = JSON.parse(variables);
 }
 
-export function getRequestBody(options: IOptionData) {
+export async function getRequestBody(options: IOptionData) {
   const data: IGraphQLRequestData = {
-    query: fs.readFileSync(options.schema).toString(),
+    query: (await fs.promises.readFile(options.schema)).toString(),
   };
 
   if (options.operationName) {
@@ -101,7 +101,7 @@ export function getRequestBody(options: IOptionData) {
   }
 
   if (options.variables) {
-    parseVariables(data, options);
+    await parseVariables(data, options);
   }
 
   return data;
