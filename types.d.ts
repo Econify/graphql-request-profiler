@@ -34,6 +34,7 @@ export interface IOptionData {
   schema: string;
   operationName: string;
   variables: string;
+  output: string;
   data: string;
   help: boolean;
 }

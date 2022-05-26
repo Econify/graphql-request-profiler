@@ -3,7 +3,7 @@
 import commandLineArgs from 'command-line-args';
 import fs from 'fs';
 import path from 'path';
-import { IGraphQLRequestData, IOptionData } from './types';
+import { IOptionData } from './types';
 import { helpText } from './help';
 import { getRequestBody, openUrl, requestGraphQL } from './util';
 
@@ -15,14 +15,16 @@ async function makeRequestAndOpenData(options: IOptionData) {
     process.exit(1);
   }
 
-  // TODO: allow custom output file name in options, use tmp if doesn't exist
-  const tmpFileName = `tmp-${Math.random().toString().replace('.', '')}.json`;
-  fs.writeFileSync(
-    tmpFileName,
-    JSON.stringify(response.data.extensions.traces)
-  );
+  const fileName =
+    options.output || `tmp-${Math.random().toString().replace('.', '')}.json`;
 
-  openData({ data: tmpFileName } as IOptionData);
+  fs.writeFileSync(fileName, JSON.stringify(response.data.extensions.traces));
+
+  openData({ data: fileName } as IOptionData);
+
+  if (!options.output) {
+    fs.rmSync(fileName);
+  }
 }
 
 function printHelp() {
@@ -42,9 +44,10 @@ function openData(options: IOptionData) {
 }
 
 const options = commandLineArgs([
+  { name: 'output', alias: 'o', type: String },
   { name: 'endpoint', alias: 'e', type: String },
   { name: 'schema', alias: 's', type: String },
-  { name: 'operationName', alias: 'o', type: String },
+  { name: 'operationName', alias: 'n', type: String },
   { name: 'variables', alias: 'v', type: String },
   { name: 'data', alias: 'd', type: String },
   { name: 'help', type: Boolean },
