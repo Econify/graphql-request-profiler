@@ -1,73 +1,25 @@
 # graphql-request-profiler
 
-Easy to use GraphQL performance analysis utility for profiling resolver execution time.
+Easy to use GraphQL performance analysis utility for profiling resolver execution time. Observe resolver execution time in your API with a visualization tool.
 
 ## Example
 
-Observe resolver execution time in your API. To run this example, pull down the repository and run `yarn && yarn dev:express`.
-
-```json
-{
-  "data": {
-    "sodas": [
-      { "sugar": 0 },
-      { "sugar": 0 },
-      { "sugar": 0 },
-      { "sugar": 0 },
-      { "sugar": 0 }
-    ]
-  },
-  "extensions": {
-    "totalTimeMs": 1864,
-    "traces": [
-      {
-        "execTimeMs": 888,
-        "execStartTimeMs": 2,
-        "execEndTimeMs": 890,
-        "location": "sodas",
-        "parentType": "Query"
-      },
-      {
-        "execTimeMs": 168,
-        "execStartTimeMs": 891,
-        "execEndTimeMs": 1059,
-        "location": "sodas.4.sugar",
-        "parentType": "DietCoke"
-      },
-      {
-        "execTimeMs": 193,
-        "execStartTimeMs": 891,
-        "execEndTimeMs": 1084,
-        "location": "sodas.3.sugar",
-        "parentType": "DietCoke"
-      },
-      {
-        "execTimeMs": 425,
-        "execStartTimeMs": 891,
-        "execEndTimeMs": 1316,
-        "location": "sodas.0.sugar",
-        "parentType": "DietCoke"
-      },
-      {
-        "execTimeMs": 875,
-        "execStartTimeMs": 891,
-        "execEndTimeMs": 1766,
-        "location": "sodas.1.sugar",
-        "parentType": "DietCoke"
-      },
-      {
-        "execTimeMs": 972,
-        "execStartTimeMs": 891,
-        "execEndTimeMs": 1863,
-        "location": "sodas.2.sugar",
-        "parentType": "DietCoke"
-      }
-    ]
-  }
-}
+```
+graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/graphql
 ```
 
-## Usage
+![Sample Visualizer](/sample.png)
+
+To try this sample yourself, you can pull down the repository and run
+
+```
+yarn
+yarn build
+yarn dev:express &
+./visualize.js -s examples/operation.graphql -e http://localhost:4000/graphql
+```
+
+## Installation
 
 ### express-graphql
 
@@ -112,8 +64,7 @@ See [full running example here](./examples/apollo/index.js)
 
 ## TODO
 
-- Web visualizer
-  - Colors to represent how expensive a resolver is
-  - Add CLI examples
 - Tests
+- Better error handling
+- Web visualizer colors to represent how expensive a resolver is
 - Investigate use w/ federation
