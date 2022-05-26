@@ -1,0 +1,77 @@
+name: Release NPM Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_type:
+        description: 'Release type (minor, major, patch):'
+        required: true
+        default: patch
+  release:
+    types:
+      - created
+
+jobs:
+  build_bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Unit Tests
+        run: yarn test
+
+      - name: Run package
+        run: yarn build
+
+  publish_npm_package:
+    name: Create Release
+    needs: [build_bundle]
+    runs-on: ubuntu-latest
+    outputs:
+      NEW_TAG: ${{ steps.version.outputs.NEW_TAG }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Automated Version Bump
+        uses: phips28/gh-action-bump-version@master
+        id: version_bump
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          target-branch: ${{ env.GIT_REF }}
+          default: ${{ github.event.inputs.release_type }}
+          commit-message: 'CI: version bump to {{version}} [skip ci]'
+          tag-prefix: 'v'
+
+      - name: Create Changelog
+        id: changelog
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: gandarez/changelog-action@v1.2.0
+        with:
+          exclude: |
+            ^CI: version bump to.*
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: ${{ steps.version_bump.outputs.newTag }}
+          name: ${{ steps.version_bump.outputs.newTag }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish Package
+        run: npm publish --dry-run
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
