@@ -4,6 +4,7 @@
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "main": "index.js",
   "types": "types.d.ts",
+  "bin": "visualize.js",
   "keywords": [
     "graphql",
     "profiler",
@@ -16,7 +17,7 @@
   "license": "ISC",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc",
+    "build": "tsc && chmod +x visualize.js",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
     "clean-build": "rm *.js",
@@ -26,10 +27,13 @@
     "dev:apollo": "npx nodemon -e \"ts\" -x \"npm run example:apollo\""
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "command-line-args": "^5.2.1",
     "graphql": "^16.5.0"
   },
   "devDependencies": {
     "@graphql-tools/schema": "^8.3.11",
+    "@types/command-line-args": "^5.2.0",
     "@types/node": "^17.0.34",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
     "@typescript-eslint/parser": "^5.25.0",
