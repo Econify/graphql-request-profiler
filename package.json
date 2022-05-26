@@ -4,7 +4,7 @@
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "main": "index.js",
   "types": "types.d.ts",
-  "bin": "visualize.js",
+  "bin": "cli.js",
   "keywords": [
     "graphql",
     "profiler",
