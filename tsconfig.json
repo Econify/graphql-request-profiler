@@ -1,5 +1,11 @@
 {
-  "exclude": ["node_modules/*/**", "examples/*/**", "dist/**/*", "jest*"],
+  "exclude": [
+    "node_modules/*/**",
+    "examples/*/**",
+    "dist/**/*",
+    "jest*",
+    "test/**/*"
+  ],
   "compilerOptions": {
     "target": "es2020",
     "module": "commonjs",

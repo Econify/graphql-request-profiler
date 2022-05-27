@@ -2,8 +2,8 @@
 function createTooltipHtml(d) {
   return `
   <div>${Object.keys(d)
-    .map((key) => '<p>' + key + ': ' + d[key] + '</p>')
-    .join('')}</div>
+      .map((key) => '<p>' + key + ': ' + d[key] + '</p>')
+      .join('')}</div>
   `;
 }
 
@@ -95,7 +95,7 @@ function waterfall(root, data) {
       d3.selectAll('.rectWF').style('opacity', 1);
       return tooltip.style('opacity', 0);
     })
-    .attr('width', function (d, i) {
+    .attr('width', function (d) {
       return x(d.execEndTimeMs - d.execStartTimeMs);
     });
 
