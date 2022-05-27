@@ -75,8 +75,8 @@ export async function requestGraphQL(
 }
 
 async function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
-  const variables = await fs.promises.readFile(options.variables).toString();
-  data.variables = JSON.parse(variables);
+  const variables = await fs.promises.readFile(options.variables);
+  data.variables = JSON.parse(variables.toString());
 }
 
 export async function getRequestBody(options: IOptionData) {
