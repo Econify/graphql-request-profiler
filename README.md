@@ -1,6 +1,6 @@
 # graphql-request-profiler
 
-![example workflow](https://github.com/Econify/graphql-request-profiler/actions/workflows/check-package.yml/badge.svg)
+![example workflow](https://github.com/Econify/graphql-request-profiler/actions/workflows/checks.yml/badge.svg)
 
 Easy to use GraphQL performance analysis utility for profiling resolver execution time. Observe resolver execution time in your API with a visualization tool.
 
