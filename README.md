@@ -23,6 +23,14 @@ yarn dev:express &
 
 ## Installation
 
+```sh
+npm install --save graphql-request-profiler
+```
+
+```sh
+yarn add graphql-request-profiler
+```
+
 ### express-graphql
 
 ```js
