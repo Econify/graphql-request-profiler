@@ -11,5 +11,7 @@ yarn.lock
 .gitignore
 .prettierrc
 tsconfig.json
+*.log
 
 *.png
+
