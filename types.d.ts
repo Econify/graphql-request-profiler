@@ -21,7 +21,7 @@ export type TraceFunction = (fn: ResolverFunction) => ResolverFunction;
 
 export type ResolverFunction = GraphQLFieldResolver<any, any, any>;
 
-export type Context = Record<symbol, any>;
+export type SymbolObject = Record<symbol, any>;
 
 export interface IGraphQLRequestData {
   query: string;
