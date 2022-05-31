@@ -12,15 +12,6 @@ graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/
 
 ![Sample Visualizer](/sample.png)
 
-To try this sample yourself, you can pull down the repository and run
-
-```sh
-yarn
-yarn build
-yarn dev:express &
-./cli.js -s examples/operation.graphql -e http://localhost:4000/graphql
-```
-
 ## Installation
 
 ```sh
