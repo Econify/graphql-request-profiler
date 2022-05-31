@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { GraphQLFieldResolver } from 'graphql';
+import type {
+  GraphQLFieldResolver,
+  GraphQLInputFieldMap,
+  GraphQLNamedType,
+} from 'graphql';
 import type { IncomingMessage } from 'http';
+import type { getResolverTraces } from './index';
 export interface IResolverTrace {
   execTimeMs: number;
   execStartTimeMs: number;
@@ -9,7 +14,7 @@ export interface IResolverTrace {
   parentType: string;
 }
 
-export type GraphQLNamedType = GraphQLNamedType & {
+export type IGraphQLNamedType = GraphQLNamedType & {
   getFields?: () => GraphQLInputFieldMap;
 };
 
@@ -41,7 +46,7 @@ export interface IOptionData {
   headerName: string;
 }
 
-interface IGraphQLResponse {
+export interface IGraphQLResponse {
   data: any;
   extensions?: ReturnType<typeof getResolverTraces>;
 }

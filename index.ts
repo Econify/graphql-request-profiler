@@ -78,7 +78,7 @@ function createApolloProfilerOptions(options: GraphQLServiceContext) {
   return options;
 }
 
-function getResolverTraces(context: SymbolObject) {
+export function getResolverTraces(context: SymbolObject) {
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],

@@ -1,7 +1,7 @@
 import type { AxiosResponse } from 'axios';
 import type { GraphQLField, GraphQLSchema } from 'graphql';
 import type {
-  GraphQLNamedType,
+  IGraphQLNamedType,
   IGraphQLRequestData,
   IGraphQLResponse,
   IOptionData,
@@ -21,7 +21,7 @@ export const nsToMs = (nanoseconds: bigint) => {
 
 export function useResolverDecorator(schema: GraphQLSchema, fn: TraceFunction) {
   for (const typeName in schema.getTypeMap()) {
-    const type = schema.getType(typeName) as GraphQLNamedType;
+    const type = schema.getType(typeName) as IGraphQLNamedType;
 
     if (!isIntrospectionType(type)) {
       applyResolverToType(type, fn);
@@ -29,7 +29,7 @@ export function useResolverDecorator(schema: GraphQLSchema, fn: TraceFunction) {
   }
 }
 
-function applyResolverToType(type: GraphQLNamedType, fn: TraceFunction) {
+function applyResolverToType(type: IGraphQLNamedType, fn: TraceFunction) {
   if (type.getFields) {
     const fields = type.getFields();
 
