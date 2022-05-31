@@ -1,9 +1,10 @@
 import type {
-  Context,
+  SymbolObject,
   IPluginOptions,
   ResolverFunction,
   IExpressGraphQLRequest,
 } from './types';
+import type { GraphQLSchema } from 'graphql';
 import type { OptionsData, RequestInfo } from 'express-graphql';
 import type {
   BaseContext,
@@ -17,6 +18,8 @@ import { nsToMs, useResolverDecorator } from './util';
 
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
+const SYMBOL_WRAPPED = Symbol('SYMBOL_WRAPPED');
+const state: SymbolObject = {};
 
 export function createExpressProfilerPlugin(
   req: IExpressGraphQLRequest,
@@ -24,15 +27,10 @@ export function createExpressProfilerPlugin(
   config?: IPluginOptions
 ) {
   if (req.headers[config?.headerName || 'x-trace'] === 'true') {
-    if (!options.context) {
-      options.context = {};
-    }
-
     options.extensions = decorateExtensions(options.extensions);
-
+    decorateResolvers(options.schema);
+    createContext(options);
     addStartTime(options);
-
-    useResolverDecorator(options.schema, trace);
   }
 
   return options;
@@ -69,12 +67,18 @@ export function createApolloProfilerPlugin(options?: IPluginOptions) {
   };
 }
 
+function createContext(options: OptionsData) {
+  if (!options.context) {
+    options.context = {} as SymbolObject;
+  }
+}
+
 function createApolloProfilerOptions(options: GraphQLServiceContext) {
   useResolverDecorator(options.schema, trace);
   return options;
 }
 
-export function getResolverTraces(context: Context) {
+export function getResolverTraces(context: SymbolObject) {
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
@@ -82,26 +86,36 @@ export function getResolverTraces(context: Context) {
 }
 
 function addStartTime(options: OptionsData | GraphQLRequestContext) {
-  const { context } = options as { context: Context };
+  const { context } = options as { context: SymbolObject };
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
 }
 
+function decorateResolvers(schema: GraphQLSchema) {
+  if (!state[SYMBOL_WRAPPED]) {
+    state[SYMBOL_WRAPPED] = true;
+    useResolverDecorator(schema, trace);
+  }
+}
+
 function decorateExtensions(fn?: OptionsData['extensions']) {
-  if (fn) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return function (this: any, info: RequestInfo) {
+  if (fn && fn.name !== 'graphQLRequestProfilerExtensionsWrapperFn') {
+    return function graphQLRequestProfilerExtensionsWrapperFn(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      this: any,
+      info: RequestInfo
+    ) {
       const baseExtensionsData = fn.call(this, info);
       const { context } = info;
       return {
         ...baseExtensionsData,
-        ...getResolverTraces(context as Context),
+        ...getResolverTraces(context as SymbolObject),
       };
     };
   }
 
   return ({ context }: RequestInfo) => ({
-    ...getResolverTraces(context as Context),
+    ...getResolverTraces(context as SymbolObject),
   });
 }
 
