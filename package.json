@@ -2,8 +2,8 @@
   "name": "graphql-request-profiler",
   "version": "0.0.0",
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
-  "main": "dist/index.js",
-  "bin": "dist/cli.js",
+  "main": "index.js",
+  "bin": "cli.js",
   "keywords": [
     "graphql",
     "profiler",
