@@ -7,9 +7,6 @@ on:
         description: 'Release type (minor, major, patch):'
         required: true
         default: patch
-  release:
-    types:
-      - created
 
 jobs:
   publish_npm_package:
