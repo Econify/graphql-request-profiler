@@ -1,9 +1,11 @@
 {
-  "name": "graphql-request-profiler",
+  "name": "@econify/graphql-request-profiler",
   "version": "0.0.0",
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "main": "index.js",
-  "bin": "cli.js",
+  "bin": {
+    "graphql-request-profiler": "dist/cli.js"
+  },
   "keywords": [
     "graphql",
     "profiler",
@@ -20,7 +22,7 @@
     "postbuild": "cd dist && perl -i -pe 's,#!/usr/bin/env ts-node,#!/usr/bin/env node,g' cli.js && chmod +x cli.js",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
-    "clean-build": "rm *.js",
+    "clean-build": "rm -rf dist",
     "dev:cli": "./cli.ts",
     "dev:express": "npx nodemon -e \"ts\" -x \"npm run example:express\"",
     "dev:apollo": "npx nodemon -e \"ts\" -x \"npm run example:apollo\"",

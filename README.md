@@ -15,11 +15,11 @@ graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/
 ## Installation
 
 ```sh
-npm install --save graphql-request-profiler
+npm install --save @econify/graphql-request-profiler
 ```
 
 ```sh
-yarn add graphql-request-profiler
+yarn add @econify/graphql-request-profiler
 ```
 
 ### express-graphql
