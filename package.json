@@ -7,8 +7,7 @@
     "graphql-request-profiler": "dist/cli.js"
   },
   "files": [
-    "dist",
-    "viz"
+    "dist"
   ],
   "keywords": [
     "graphql",
@@ -23,7 +22,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
-    "postbuild": "cd dist && perl -i -pe 's,#!/usr/bin/env ts-node,#!/usr/bin/env node,g' cli.js && chmod +x cli.js",
+    "postbuild": "cd dist && perl -i -pe 's,#!/usr/bin/env ts-node,#!/usr/bin/env node,g' cli.js && chmod +x cli.js && cp -r ../viz viz",
     "prettier": "npx prettier --write .",
     "lint": "npx eslint .",
     "clean-build": "rm -rf dist",
