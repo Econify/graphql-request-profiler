@@ -1,6 +1,6 @@
 # graphql-request-profiler
 
-![example workflow](https://github.com/Econify/graphql-request-profiler/actions/workflows/checks.yml/badge.svg)
+![Status Checks](https://github.com/Econify/graphql-request-profiler/actions/workflows/checks.yml/badge.svg)
 
 Easy to use GraphQL performance analysis utility for profiling resolver execution time. Observe resolver execution time in your API with a visualization tool.
 
@@ -10,7 +10,7 @@ Easy to use GraphQL performance analysis utility for profiling resolver executio
 graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/graphql
 ```
 
-![Sample Visualizer](/sample.png)
+![Sample Visualizer](https://github.com/Econify/graphql-request-profiler/raw/main/sample.png)
 
 ## Installation
 
@@ -40,7 +40,7 @@ app.use(
 );
 ```
 
-See [full running example here](./examples/express-graphql/index.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/express-graphql/index.ts)
 
 ### apollo-server
 
@@ -57,7 +57,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-See [full running example here](./examples/apollo/index.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/apollo/index.ts)
 
 ### Custom Activation Header
 
