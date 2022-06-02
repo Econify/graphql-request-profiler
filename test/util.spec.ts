@@ -1,5 +1,5 @@
-import type { IOptionData, IGraphQLRequestData } from '../types';
-import { requestGraphQL } from '../util';
+import type { IOptionData, IGraphQLRequestData } from '../src/types';
+import { requestGraphQL } from '../src/util';
 import axios from 'axios';
 
 jest.mock('axios', () => jest.fn());

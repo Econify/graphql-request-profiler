@@ -1,5 +1,5 @@
 import { buildSchema } from '../schema';
-import { createExpressProfilerPlugin } from '../../index';
+import { createExpressProfilerPlugin } from '../../src/index';
 
 import express from 'express';
 import { graphqlHTTP } from 'express-graphql';

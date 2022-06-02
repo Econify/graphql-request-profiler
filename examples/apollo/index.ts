@@ -1,6 +1,6 @@
 import { ApolloServer } from 'apollo-server';
 import { buildSchema } from '../schema';
-import { createApolloProfilerPlugin } from '../../index';
+import { createApolloProfilerPlugin } from '../../src/index';
 
 const server = new ApolloServer({
   schema: buildSchema(),
