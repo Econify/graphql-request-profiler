@@ -1,6 +1,6 @@
 {
   "name": "@econify/graphql-request-profiler",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "main": "dist/index.js",
   "bin": {
