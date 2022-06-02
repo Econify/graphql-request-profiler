@@ -25,7 +25,7 @@ yarn add @econify/graphql-request-profiler
 ### express-graphql
 
 ```js
-import { createExpressProfilerPlugin } from 'graphql-request-profiler';
+import { createExpressProfilerPlugin } from '@econify/graphql-request-profiler';
 
 const app = express();
 
@@ -45,7 +45,7 @@ See [full running example here](./examples/express-graphql/index.ts)
 ### apollo-server
 
 ```js
-import { createApolloProfilerPlugin } from 'graphql-request-profiler';
+import { createApolloProfilerPlugin } from '@econify/graphql-request-profiler';
 
 const server = new ApolloServer({
   schema: buildSchema(),
