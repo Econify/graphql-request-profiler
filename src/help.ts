@@ -1,6 +1,12 @@
-import { version } from './package.json';
+import fs from 'fs';
+import path from 'path';
 
-export function helpText() {
+export async function helpText() {
+  const pkg = await fs.promises.readFile(
+    path.join(__dirname, '../package.json'),
+    'utf8'
+  );
+  const version = JSON.parse(pkg).version;
   return `graphql-request-profiler: Visualize your GraphQL resolver execution time - Version ${version}
 
 Usage:

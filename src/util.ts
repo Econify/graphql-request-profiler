@@ -95,6 +95,6 @@ export async function getRequestBody(options: IOptionData) {
   return data;
 }
 
-export function printHelp() {
-  console.log(helpText());
+export async function printHelp() {
+  console.log(await helpText());
 }

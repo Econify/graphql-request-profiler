@@ -65,7 +65,7 @@ const options = commandLineArgs([
       process.exit(0);
     }
 
-    printHelp();
+    await printHelp();
     process.exit(0);
   } catch (e) {
     console.error(`Error: ${(e as Error).message}`);
