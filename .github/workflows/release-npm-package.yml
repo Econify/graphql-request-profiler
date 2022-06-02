@@ -75,7 +75,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Package
-        working-directory: dist
         run: npm publish --dry-run --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
