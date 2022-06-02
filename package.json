@@ -6,6 +6,10 @@
   "bin": {
     "graphql-request-profiler": "dist/cli.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Econify/graphql-request-profiler.git"
+  },
   "files": [
     "dist"
   ],
