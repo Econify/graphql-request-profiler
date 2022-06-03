@@ -20,6 +20,7 @@ Arguments:
   --schema, -s (file path)        requesting schema file location
   --output, -o (file path)        output request data to file location
   --endpoint, -e (string)         the endpoint of the GraphQL server to request
+  --variables, -v (file path)     variables to pass to the GraphQL server
   --operationName, -n (string)    optional, name of the operation to use in the schema
   --headerName, -h (string)       optional, the name of the header to activate
 
