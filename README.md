@@ -73,3 +73,7 @@ A custom plugin activation HTTP header may be specified when using the CLI tool.
 ```sh
 graphql-request-profiler --headerName x-custom-header [...]
 ```
+
+## Like this package?
+
+Check out Econify's other GraphQL package, [graphql-rest-router](https://www.github.com/Econify/graphql-rest-router), that allows routing to and caching an internal GraphQL API as a self-documenting REST API without exposing the schema!
