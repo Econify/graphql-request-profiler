@@ -11,11 +11,10 @@ function waterfall(root, data) {
   const colorScale = d3.scaleOrdinal(d3.schemeCategory10);
   const maxData = Math.max(...data.map((d) => d.execEndTimeMs));
   const leftMargin = 125;
-  const svgHeight = 2000;
+  const barHeight = 50;
+  const svgHeight = data.length * barHeight;
   const svgWidth = maxData * 2;
   const numTicks = svgWidth / 80;
-  const barHeight = d3.min([50, svgHeight / data.length]);
-  const lineHeight = data.length * barHeight;
 
   const tooltip = d3.select(root).append('div').attr('class', 'tooltip');
 
@@ -58,7 +57,7 @@ function waterfall(root, data) {
     .attr('y1', 0)
     .transition()
     .duration(1500)
-    .attr('y2', lineHeight)
+    .attr('y2', svgHeight)
     .style('stroke', '#ccc');
 
   // Create the bars
@@ -143,7 +142,7 @@ function waterfall(root, data) {
     .attr('x1', leftMargin)
     .attr('x2', leftMargin)
     .attr('y1', 15)
-    .attr('y2', 15 + lineHeight)
+    .attr('y2', 15 + svgHeight)
     .style('stroke', '#ccc');
 
   lineLabels
@@ -160,10 +159,13 @@ function waterfall(root, data) {
     .attr('text-anchor', 'end')
     .attr('alignment-baseline', 'middle')
     .text(function (d) {
-      const ellipsisText = d.location.length > 28 ? '...' : '';
+      const lengthLimit = 20;
+      const isLong = d.location.length > lengthLimit;
+      console.log('islong', isLong);
+      const ellipsisText = isLong ? '...' : '';
       return (
         ellipsisText +
-        d.location.slice(d.location.length - 28, d.location.length)
+        (isLong ? d.location.slice(d.location.length - lengthLimit, d.location.length) : d.location)
       );
     });
 }
