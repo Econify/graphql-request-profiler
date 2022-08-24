@@ -161,7 +161,6 @@ function waterfall(root, data) {
     .text(function (d) {
       const lengthLimit = 20;
       const isLong = d.location.length > lengthLimit;
-      console.log('islong', isLong);
       const ellipsisText = isLong ? '...' : '';
       return (
         ellipsisText +
