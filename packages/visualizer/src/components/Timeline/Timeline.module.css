@@ -15,6 +15,7 @@
   border-radius: 4px;
   border: 1px solid var(--black);
   z-index: 99;
+  margin: 0 4px;
 }
 
 .container {
