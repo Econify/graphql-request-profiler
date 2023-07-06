@@ -25,7 +25,7 @@
   "license": "ISC",
   "scripts": {
     "test": "jest",
-    "build": "tsc && cp ../visualizer/dist ./dist/public",
+    "build": "tsc && cp -r ../visualizer/dist ./dist/public",
     "postbuild": "cd dist && perl -i -pe 's,#!/usr/bin/env ts-node,#!/usr/bin/env node,g' cli.js && chmod +x cli.js",
     "lint": "npx eslint .",
     "clean-build": "rm -rf dist",
