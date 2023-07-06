@@ -25,7 +25,10 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "prettier": "npx prettier --write .",
-    "prepublish": "turbo prune --scope=\"@econify/graphql-request-profiler\" --docker"
+    "prune": "turbo prune --scope=\"@econify/graphql-request-profiler\" --docker",
+    "prepublish": "mv out/full/packages/visualizer/dist out/full/packages/plugin/dist/visualizer",
+    "publish": "cd out/full/packages/plugin && npm publish --access public --dry-run",
+    "clean": "rm -rf $(find . -name \"node_modules\" -type d | grep -v /out/)"
   },
   "dependencies": {},
   "devDependencies": {
