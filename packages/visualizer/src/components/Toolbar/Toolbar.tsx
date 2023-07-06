@@ -73,14 +73,14 @@ const Toolbar: Component<IToolbarProps> = (props) => {
     <nav class={styles.container}>
       <div class={styles.group}>
         <span>Filter</span>
-        <input ref={filterRef} type="text" onInput={onFilterChange}></input>
+        <input ref={filterRef} type='text' onInput={onFilterChange}></input>
       </div>
       <div class={styles.group}>
         <span>Sort by</span>
-        <select name="sort" ref={sortRef} onChange={onSortChange}>
-          <option id="time">Execution Start (ms)</option>
-          <option id="asc">Execution Total Acsending (ms)</option>
-          <option id="desc">Exeuction Total Decsending (ms)</option>
+        <select name='sort' ref={sortRef} onChange={onSortChange}>
+          <option id='time'>Execution Start (ms)</option>
+          <option id='asc'>Execution Total Acsending (ms)</option>
+          <option id='desc'>Exeuction Total Decsending (ms)</option>
         </select>
       </div>
       <div class={styles.group}>
@@ -90,9 +90,9 @@ const Toolbar: Component<IToolbarProps> = (props) => {
             performance
             <input
               checked={true}
-              type="checkbox"
+              type='checkbox'
               ref={timeColorRef}
-              id="time"
+              id='time'
               onChange={onColorChange}
             />
           </span>
@@ -100,9 +100,9 @@ const Toolbar: Component<IToolbarProps> = (props) => {
             type
             <input
               checked={false}
-              type="checkbox"
+              type='checkbox'
               ref={typeColorRef}
-              id="type"
+              id='type'
               onChange={onColorChange}
             />
           </span>
@@ -113,10 +113,10 @@ const Toolbar: Component<IToolbarProps> = (props) => {
         <span>Scale</span>
         <input
           onInput={onScaleChange}
-          type="range"
-          min="0"
-          max="500"
-          value="50"
+          type='range'
+          min='0'
+          max='500'
+          value='50'
           class={styles.slider}
           ref={scaleRef}
         />

@@ -64,8 +64,7 @@ export const Segment: Component<ISegmentProps> = (props) => {
       onMouseLeave={() => setHover(null)}
       style={calcPositionStyles()}
       ref={hoverRef}
-      class={cx(styles.segment, { [styles.hover]: hover() })}
-    >
+      class={cx(styles.segment, { [styles.hover]: hover() })}>
       <pre class={styles.label}>{props.data.parentType}</pre>
       {hover() && <Tooltip data={props.data} x={hover()?.x} y={hover()?.y} />}
     </div>

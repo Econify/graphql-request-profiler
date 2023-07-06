@@ -69,8 +69,7 @@ export const Timeline: Component<TTimelineProps> = (props) => {
         style={{
           display: typeof timeCursor() === 'undefined' ? 'none' : 'block',
           left: `${timeCursor()}px `,
-        }}
-      >
+        }}>
         <span ref={timeCursorLabelRef} class={styles.label} />
       </div>
       {props.children}

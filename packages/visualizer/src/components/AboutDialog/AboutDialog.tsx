@@ -10,9 +10,9 @@ export const AboutDialog: Component<IAboutProps> = (props) => {
     <dialog ref={props.ref}>
       <p class={styles.text}>
         Written by Regan Karlewicz for{' '}
-        <a href="https://www.econify.com">Econify</a>
+        <a href='https://www.econify.com'>Econify</a>
       </p>
-      <form class={styles.form} method="dialog">
+      <form class={styles.form} method='dialog'>
         <button>OK</button>
       </form>
     </dialog>

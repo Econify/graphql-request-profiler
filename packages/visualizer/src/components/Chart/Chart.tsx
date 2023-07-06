@@ -45,8 +45,7 @@ const Chart: Component<IChartProps> = (props) => {
       <Timeline
         totalTimeMs={calcTotalTime()}
         scale={props.scale}
-        containerRef={containerRef}
-      >
+        containerRef={containerRef}>
         {calcSegmentData().map((item) => (
           <Segment
             scale={props.scale}

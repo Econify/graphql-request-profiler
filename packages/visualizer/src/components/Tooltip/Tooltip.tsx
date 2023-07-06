@@ -13,8 +13,7 @@ export const Tooltip: Component<ITooltipProps> = (props) => {
   return (
     <div
       class={styles.tooltip}
-      style={{ top: `${props.y || 0}px`, left: `${props.x || 0}px` }}
-    >
+      style={{ top: `${props.y || 0}px`, left: `${props.x || 0}px` }}>
       <code class={styles.data}>
         {Object.entries(props.data).map(([key, value]) => (
           <div class={styles.tooltipLine}>
