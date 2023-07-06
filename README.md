@@ -14,12 +14,46 @@ graphql-request-profiler -s examples/operation.graphql -e http://localhost:4000/
 
 ## Installation
 
+For CLI usage with API that has the plugin installed:
+
+```sh
+npm i -g @econify/graphql-request-profiler
+```
+
+Within a project:
+
 ```sh
 npm install --save @econify/graphql-request-profiler
 ```
 
 ```sh
 yarn add @econify/graphql-request-profiler
+```
+
+### CLI Help
+
+```
+$ graphql-request-profiler --help
+graphql-request-profiler: Visualize your GraphQL resolver execution time - Version 0.2.0
+
+Usage:
+
+  graphql-request-profiler --data <fileName>
+  graphql-request-profiler --schema operation.graphql --endpoint=localhost:4000/graphql
+  graphql-request-profiler --help
+
+Arguments:
+
+  --schema, -s (file path)        requesting schema file location
+  --output, -o (file path)        output request data to file location
+  --endpoint, -e (string)         the endpoint of the GraphQL server to request
+  --variables, -v (file path)     variables to pass to the GraphQL server
+  --operationName, -n (string)    optional, name of the operation to use in the schema
+  --headerName, -h (string)       optional, the name of the header to activate
+
+  --data, -d (string)             display an existing trace file
+  --help (boolean)                displays this help text
+
 ```
 
 ### express-graphql
