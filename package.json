@@ -26,7 +26,7 @@
     "test": "turbo run test",
     "prettier": "npx prettier --write .",
     "prune": "turbo prune --scope=\"@econify/graphql-request-profiler\"",
-    "publish": "cd out/full/packages/plugin && npm publish --access public --dry-run",
+    "publish": "cd out/packages/plugin && npm publish --access public",
     "clean": "rm -rf out && find . -name \"node_modules\" -type d -exec rm -rf {} + && find . -name \"dist\" -type d -exec rm -rf {} +",
     "pipeline": "yarn run build && yarn run prune"
   },
