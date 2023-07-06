@@ -5,7 +5,6 @@ import fs from 'fs';
 import path from 'path';
 import { IOptionData } from './types';
 import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
-import { exec } from 'child_process';
 
 async function makeRequestAndOpenData(options: IOptionData) {
   const requestBody = await getRequestBody(options);
