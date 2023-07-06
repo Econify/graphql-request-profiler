@@ -44,7 +44,7 @@ function applyResolverToType(type: IGraphQLNamedType, fn: TraceFunction) {
   }
 }
 
-function getOpenCommand() {
+export function getOpenCommand() {
   switch (process.platform) {
     case 'darwin':
       return 'open';

@@ -4,7 +4,14 @@ import commandLineArgs from 'command-line-args';
 import fs from 'fs';
 import path from 'path';
 import { IOptionData } from './types';
-import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
+import childProcess from 'child_process';
+import {
+  getOpenCommand,
+  getRequestBody,
+  openUrl,
+  printHelp,
+  requestGraphQL,
+} from './util';
 
 async function makeRequestAndOpenData(options: IOptionData) {
   const requestBody = await getRequestBody(options);
@@ -30,7 +37,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
 }
 
 async function openData(options: IOptionData) {
-  const pathToWrite = path.join(__dirname, '../../visualizer/dist/data.js');
+  const pathToWrite = path.join(__dirname, 'public/data.js');
 
   const dataContents = await fs.promises.readFile(options.data);
 
@@ -39,7 +46,20 @@ async function openData(options: IOptionData) {
     `/* eslint-disable no-undef */\nwindow.data = ${dataContents.toString()}`
   );
 
-  openUrl(path.join(__dirname, 'viz/index.html'));
+  return new Promise((res, rej) => {
+    childProcess.exec(
+      'npx serve dist/public -l 8080',
+      (error, stdout, stderr) => {
+        if (error) {
+          console.error(`exec error: ${error}`);
+          rej(error);
+        }
+      }
+    );
+
+    const openCmd = getOpenCommand();
+    childProcess.exec(`${openCmd} http://localhost:8080`);
+  });
 }
 
 const options = commandLineArgs([
