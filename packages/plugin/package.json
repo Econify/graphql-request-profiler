@@ -37,12 +37,12 @@
     "dev:ui": "vite -c ./viz/tsconfig.json"
   },
   "dependencies": {
-    "@econify/graphql-request-visualizer": "*",
     "axios": "^0.27.2",
     "command-line-args": "^5.2.1",
     "graphql": "^16.5.0"
   },
   "devDependencies": {
+    "@econify/graphql-request-visualizer": "*",
     "@graphql-tools/schema": "^8.3.11",
     "@jest/types": "^28.1.0",
     "@types/command-line-args": "^5.2.0",
