@@ -100,5 +100,5 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
-      - name: Lint
+      - name: Test
         run: yarn test
