@@ -5,6 +5,7 @@ import fs from 'fs';
 import path from 'path';
 import { IOptionData } from './types';
 import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
+import { exec } from 'child_process';
 
 async function makeRequestAndOpenData(options: IOptionData) {
   const requestBody = await getRequestBody(options);
@@ -30,7 +31,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
 }
 
 async function openData(options: IOptionData) {
-  const pathToWrite = path.join(__dirname, 'viz/data.js');
+  const pathToWrite = path.join(__dirname, '../../visualizer/dist/data.js');
 
   const dataContents = await fs.promises.readFile(options.data);
 

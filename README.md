@@ -1,5 +1,10 @@
 # graphql-request-profiler
 
+## TODO:
+
+- [ ]: Figure out build / publish flow. Copy visualizer build into plugin dir?
+- [ ]: Fix CLI to open visualizer. Copy static data into directory.
+
 ![Status Checks](https://github.com/Econify/graphql-request-profiler/actions/workflows/checks.yml/badge.svg)
 
 Easy to use GraphQL performance analysis utility for profiling resolver execution time. Observe resolver execution time in your API with a visualization tool.
