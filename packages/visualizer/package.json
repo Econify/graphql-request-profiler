@@ -1,6 +1,6 @@
 {
   "name": "@econify/graphql-request-visualizer",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "repository": {

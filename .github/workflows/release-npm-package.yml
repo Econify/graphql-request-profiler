@@ -46,17 +46,6 @@ jobs:
       - name: Run package
         run: yarn build
 
-      - name: Automated Version Bump
-        uses: phips28/gh-action-bump-version@master
-        id: version_bump
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          target-branch: ${{ env.GIT_REF }}
-          default: ${{ github.event.inputs.release_type }}
-          commit-message: 'CI: version bump to {{version}} [skip ci]'
-          tag-prefix: 'v'
-
       - name: Create Changelog
         id: changelog
         env:
@@ -75,6 +64,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Package
+        working-directory: ./packages/plugin
         run: npm publish --access=public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

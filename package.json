@@ -1,5 +1,6 @@
 {
   "name": "graphql-request-profiler-monorepo",
+  "version": "0.2.0",
   "private": true,
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "repository": {
@@ -23,8 +24,8 @@
     "build": "turbo build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "//publish": "",
-    "prettier": "npx prettier --write ."
+    "prettier": "npx prettier --write .",
+    "prepublish": "turbo prune --scope=\"@econify/graphql-request-profiler\" --docker"
   },
   "dependencies": {},
   "devDependencies": {
