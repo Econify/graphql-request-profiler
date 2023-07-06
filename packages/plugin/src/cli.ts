@@ -49,7 +49,7 @@ async function openData(options: IOptionData) {
   return new Promise((res, rej) => {
     const server = childProcess.spawn('npx', [
       'serve',
-      'dist/public',
+      path.join(__dirname, '../dist/public'),
       '-l',
       '8080',
     ]);
