@@ -30,7 +30,7 @@ npm install --save @econify/graphql-request-profiler
 yarn add @econify/graphql-request-profiler
 ```
 
-### CLI Help
+### CLI Usage
 
 ```
 $ graphql-request-profiler --help
