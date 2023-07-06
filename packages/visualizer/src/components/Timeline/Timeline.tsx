@@ -64,15 +64,17 @@ export const Timeline: Component<TTimelineProps> = (props) => {
 
   return (
     <>
-      <div
-        class={styles.timeCursor}
-        style={{
-          display: typeof timeCursor() === 'undefined' ? 'none' : 'block',
-          left: `${timeCursor()}px `,
-        }}>
-        <span ref={timeCursorLabelRef} class={styles.label} />
-      </div>
       {props.children}
+      <div class={styles.container}>
+        <div
+          class={styles.timeCursor}
+          style={{
+            display: typeof timeCursor() === 'undefined' ? 'none' : 'block',
+            left: `${timeCursor()}px `,
+          }}>
+          <span ref={timeCursorLabelRef} class={styles.label} />
+        </div>
+      </div>
     </>
   );
 };
