@@ -1,0 +1,16 @@
+.tooltip {
+  z-index: 999;
+  position: absolute;
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  background-color: var(--white);
+  padding: 8px;
+}
+
+.tooltipLine {
+  white-space: nowrap;
+}
+
+.tooltipKey {
+  font-weight: 700;
+}

@@ -1,0 +1,11 @@
+.text {
+  margin-bottom: 16px;
+}
+
+.text a {
+  color: var(--black);
+}
+
+.text a:hover {
+  color: var(--hover);
+}

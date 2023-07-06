@@ -1,0 +1,69 @@
+.container {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  padding: 8px;
+  background-color: var(--white);
+}
+
+.container button {
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  padding: 8px;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+.container input {
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  padding: 8px;
+}
+
+.container select {
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  padding: 8px;
+  cursor: pointer;
+}
+
+.container input[type='range'] {
+  cursor: pointer;
+}
+
+.container input[type='checkbox'] {
+  cursor: pointer;
+}
+
+.container button:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.group {
+  border: 1px solid var(--primary);
+  border-radius: 2px;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 8px;
+}
+
+@media (max-width: 1031px) {
+  .container {
+    flex-direction: column;
+  }
+}

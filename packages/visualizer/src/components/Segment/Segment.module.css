@@ -1,0 +1,21 @@
+.segment {
+  position: relative;
+  box-sizing: border-box;
+
+  border: 2px solid var(--primary);
+  transition: border 0.1s ease-in-out;
+
+  background-color: var(--white);
+  border-radius: 2px;
+}
+
+.label {
+  margin: 12px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.hover {
+  border: 3px solid var(--primary);
+}

@@ -1,0 +1,44 @@
+[
+  {
+    "execTimeMs": 22,
+    "execStartTimeMs": 2,
+    "execEndTimeMs": 24,
+    "location": "sodas",
+    "parentType": "Query"
+  },
+  {
+    "execTimeMs": 135,
+    "execStartTimeMs": 27,
+    "execEndTimeMs": 160,
+    "location": "sodas.0.sugar",
+    "parentType": "DietCoke"
+  },
+  {
+    "execTimeMs": 537,
+    "execStartTimeMs": 25,
+    "execEndTimeMs": 562,
+    "location": "sodas.1.sugar",
+    "parentType": "DietCoke"
+  },
+  {
+    "execTimeMs": 680,
+    "execStartTimeMs": 30,
+    "execEndTimeMs": 705,
+    "location": "sodas.2.sugar",
+    "parentType": "Sprite"
+  },
+  {
+    "execTimeMs": 760,
+    "execStartTimeMs": 25,
+    "execEndTimeMs": 785,
+    "location": "sodas.4.sugar",
+    "parentType": "DrPepper"
+  },
+  {
+    "execTimeMs": 491,
+    "execStartTimeMs": 509,
+    "execEndTimeMs": 1000,
+    "location": "sodas.3.sugar",
+    "parentType": "Fanta"
+  }
+]
