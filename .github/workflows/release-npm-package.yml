@@ -12,8 +12,6 @@ jobs:
   publish_npm_package:
     name: Create Release
     runs-on: ubuntu-latest
-    outputs:
-      NEW_TAG: ${{ steps.version.outputs.NEW_TAG }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -55,11 +53,15 @@ jobs:
           exclude: |
             ^CI: version bump to.*
 
+      - name: Get version
+        id: version
+        run: echo "tag=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${{ steps.version_bump.outputs.newTag }}
-          name: ${{ steps.version_bump.outputs.newTag }}
+          tag: ${{ steps.version.outputs.tag }}
+          name: ${{ steps.version.outputs.tag }}
           body: ${{ steps.changelog.outputs.changelog }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
