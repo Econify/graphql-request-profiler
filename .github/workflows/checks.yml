@@ -9,6 +9,37 @@ on:
       - main
 
 jobs:
+  publish_dry_run:
+    name: Publish Dry Run
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - uses: actions/cache@v2
+        id: yarn-cache
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Unit Tests
+        run: yarn test
+
+      - name: Run package (build, prune)
+        run: yarn run package
+
+      - name: Publish Package
+        working-directory: ./packages/plugin
+        run: yarn run publish:dry
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
   lint:
     name: eslint
     runs-on: ubuntu-latest
@@ -20,7 +51,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Get yarn cache directory path
@@ -51,7 +82,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Get yarn cache directory path
@@ -82,7 +113,7 @@ jobs:
 
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
 
       - name: Get yarn cache directory path

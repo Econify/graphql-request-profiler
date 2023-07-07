@@ -27,6 +27,7 @@
     "prettier": "npx prettier --write .",
     "prune": "turbo prune --scope=\"@econify/graphql-request-profiler\" && cp README.md out/packages/plugin/README.md",
     "publish": "cd out/packages/plugin && npm publish --access public",
+    "publish:dry": "cd out/packages/plugin && npm publish --access public --dry-run",
     "clean": "rm -rf out && find . -name \"node_modules\" -type d -exec rm -rf {} + && find . -name \"dist\" -type d -exec rm -rf {} +",
     "package": "yarn run build && yarn run prune"
   },
