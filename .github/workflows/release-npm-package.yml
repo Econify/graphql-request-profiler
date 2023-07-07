@@ -43,8 +43,8 @@ jobs:
       - name: Run Unit Tests
         run: yarn test
 
-      - name: Run package
-        run: yarn build
+      - name: Run package (build, prune)
+        run: yarn run package
 
       - name: Create Changelog
         id: changelog
@@ -65,6 +65,6 @@ jobs:
 
       - name: Publish Package
         working-directory: ./packages/plugin
-        run: npm publish --access=public
+        run: yarn run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
