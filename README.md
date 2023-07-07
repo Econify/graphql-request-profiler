@@ -78,8 +78,8 @@ server.listen(4000);
 console.log('Listening to port 4000');
 ```
 
-See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/graphql-http/http.ts)
-See [example of graphql-http with express](https://github.com/Econify/graphql-request-profiler/blob/main/examples/graphql-http/express.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/graphql-http/http.ts)
+See [example of graphql-http with express](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/graphql-http/express.ts)
 
 ### apollo-server
 
@@ -96,7 +96,7 @@ server.listen().then(({ url }) => {
 });
 ```
 
-See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/apollo/index.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/apollo/index.ts)
 
 #### Deprecated
 
@@ -118,7 +118,7 @@ app.use(
 );
 ```
 
-See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/express-graphql/index.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/express-graphql/index.ts)
 
 ### Custom Activation Header
 
