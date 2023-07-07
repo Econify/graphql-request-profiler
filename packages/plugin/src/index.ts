@@ -40,7 +40,12 @@ export function createExpressProfilerPlugin(
 
 export function createHttpHandlerProfilerPlugin(
   req: IncomingMessage,
-  { schema, context, ...rest }: HandlerOptions<unknown, unknown, SymbolObject>,
+  {
+    schema,
+    context,
+    onOperation,
+    ...rest
+  }: HandlerOptions<unknown, unknown, SymbolObject>,
   config?: IPluginOptions
 ) {
   if (req.headers[config?.headerName || 'x-trace'] === 'true') {
@@ -50,7 +55,9 @@ export function createHttpHandlerProfilerPlugin(
       ...rest,
       schema,
       context: createHttpContext(<SymbolObject>context),
-      onOperation: (_, args, result) => {
+      onOperation: async (req, args, result) => {
+        await onOperation?.(req, args, result);
+
         if (args.contextValue) {
           result.extensions = getResolverTraces(args.contextValue);
         }
