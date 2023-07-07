@@ -36,14 +36,15 @@ export interface IGraphQLRequestData {
 }
 
 export interface IOptionData {
-  endpoint: string;
-  schema: string;
-  operationName: string;
-  variables: string;
-  output: string;
-  data: string;
-  help: boolean;
-  headerName: string;
+  endpoint?: string;
+  schema?: string;
+  operationName?: string;
+  variables?: string;
+  output?: string;
+  data?: string;
+  help?: boolean;
+  port?: number;
+  headerName?: string;
 }
 
 export interface IGraphQLResponse {

@@ -23,6 +23,7 @@ Arguments:
   --variables, -v (file path)     variables to pass to the GraphQL server
   --operationName, -n (string)    optional, name of the operation to use in the schema
   --headerName, -h (string)       optional, the name of the header to activate
+  --port, -p (number)             optional, the port for the visualizer web server to run on, defaults to 8080
 
   --data, -d (string)             display an existing trace file
   --help (boolean)                displays this help text\n`;

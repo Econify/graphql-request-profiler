@@ -23,7 +23,7 @@ describe('util', () => {
         url: options.endpoint,
         data: body,
         headers: {
-          [options.headerName]: 'true',
+          [<string>options.headerName]: 'true',
         },
       });
     });

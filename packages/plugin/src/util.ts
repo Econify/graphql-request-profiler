@@ -9,7 +9,6 @@ import type {
 } from './types';
 
 import { isIntrospectionType } from 'graphql';
-import childProcess from 'child_process';
 import axios from 'axios';
 import fs from 'fs';
 
@@ -44,7 +43,7 @@ function applyResolverToType(type: IGraphQLNamedType, fn: TraceFunction) {
   }
 }
 
-function getOpenCommand() {
+export function getOpenCommand() {
   switch (process.platform) {
     case 'darwin':
       return 'open';
@@ -53,11 +52,6 @@ function getOpenCommand() {
     default:
       return 'xdg-open';
   }
-}
-
-export function openUrl(url: string) {
-  const openCmd = getOpenCommand();
-  childProcess.exec(`${openCmd} ${url}`);
 }
 
 export async function requestGraphQL(
@@ -75,11 +69,19 @@ export async function requestGraphQL(
 }
 
 async function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
+  if (!options.variables) {
+    throw new Error('No variables provided');
+  }
+
   const variables = await fs.promises.readFile(options.variables);
   data.variables = JSON.parse(variables.toString());
 }
 
 export async function getRequestBody(options: IOptionData) {
+  if (!options.schema) {
+    throw new Error('No schema provided');
+  }
+
   const data: IGraphQLRequestData = {
     query: (await fs.promises.readFile(options.schema)).toString(),
   };

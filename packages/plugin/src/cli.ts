@@ -4,7 +4,13 @@ import commandLineArgs from 'command-line-args';
 import fs from 'fs';
 import path from 'path';
 import { IOptionData } from './types';
-import { getRequestBody, openUrl, printHelp, requestGraphQL } from './util';
+import childProcess from 'child_process';
+import {
+  getOpenCommand,
+  getRequestBody,
+  printHelp,
+  requestGraphQL,
+} from './util';
 
 async function makeRequestAndOpenData(options: IOptionData) {
   const requestBody = await getRequestBody(options);
@@ -22,15 +28,46 @@ async function makeRequestAndOpenData(options: IOptionData) {
     JSON.stringify(response.data.extensions.traces)
   );
 
-  await openData({ data: fileName } as IOptionData);
+  await openData({ ...options, data: fileName } as IOptionData);
+}
 
-  if (!options.output) {
-    await fs.promises.rm(fileName);
-  }
+function webserver() {
+  return (res: (value: unknown) => void, rej: (error: Error) => void) => {
+    const port = String(options.port || 8080);
+
+    const server = childProcess.spawn('npx', [
+      'serve',
+      path.join(__dirname, '../dist/public'),
+      '-l',
+      port,
+    ]);
+
+    server.on('close', (code) => {
+      if (code !== 0) {
+        rej(new Error(`Server exited with code ${code}`));
+      } else {
+        res(code);
+      }
+    });
+
+    server.stdout.on('data', (data) => {
+      if (data.toString().match(/Accepting connections/)) {
+        childProcess.exec(`${getOpenCommand()} http://localhost:${port}`);
+      }
+    });
+
+    server.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
+  };
 }
 
 async function openData(options: IOptionData) {
-  const pathToWrite = path.join(__dirname, 'viz/data.js');
+  if (!options.data) {
+    throw new Error('No data file specified');
+  }
+
+  const pathToWrite = path.join(__dirname, '../dist/public/data.js');
 
   const dataContents = await fs.promises.readFile(options.data);
 
@@ -39,7 +76,11 @@ async function openData(options: IOptionData) {
     `/* eslint-disable no-undef */\nwindow.data = ${dataContents.toString()}`
   );
 
-  openUrl(path.join(__dirname, 'viz/index.html'));
+  if (!options.output) {
+    await fs.promises.rm(options.data);
+  }
+
+  return new Promise(webserver());
 }
 
 const options = commandLineArgs([
@@ -50,6 +91,7 @@ const options = commandLineArgs([
   { name: 'variables', alias: 'v', type: String },
   { name: 'data', alias: 'd', type: String },
   { name: 'headerName', alias: 'h', type: String },
+  { name: 'port', alias: 'p', type: Number },
   { name: 'help', type: Boolean },
 ]) as IOptionData;
 
