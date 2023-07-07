@@ -1,4 +1,4 @@
-import { createSignal, type Component, type JSX } from 'solid-js';
+import { createSignal, type Component, type JSX, onMount } from 'solid-js';
 import type { TColorsOption, TDataPoint } from '../../types';
 
 import cx from 'classnames';
@@ -21,7 +21,9 @@ export interface IHoverPosition {
 
 export const Segment: Component<ISegmentProps> = (props) => {
   let hoverRef: HTMLDivElement | undefined;
-  const [hover, setHover] = createSignal<IHoverPosition | null>(null);
+  let tooltipRef: HTMLDivElement | undefined;
+
+  const [position, setPosition] = createSignal<IHoverPosition | null>(null);
 
   const calcPositionStyles = () => {
     const styles: JSX.CSSProperties = {};
@@ -37,9 +39,9 @@ export const Segment: Component<ISegmentProps> = (props) => {
       styles['background-color'] = getMapColor(props.data.parentType);
     }
 
-    styles['width'] = `calc(${
+    styles['width'] = `${
       (props.data.execTimeMs / props.totalTimeMs) * 100 * props.scale
-    }%)`;
+    }%`;
 
     styles['margin-left'] = `${
       (props.data.execStartTimeMs / props.totalTimeMs) * 100 * props.scale
@@ -50,23 +52,37 @@ export const Segment: Component<ISegmentProps> = (props) => {
 
   const onMouseMove = (e: MouseEvent) => {
     const rect = hoverRef?.getBoundingClientRect();
+    const windowWidth = window.innerWidth;
+    const tooltipWidth = tooltipRef?.clientWidth || 0;
+
     const { left, top } = rect || { left: 0, top: 0 };
 
     const x = e.clientX - left;
     const y = e.clientY - top;
+    const endPosition = x + tooltipWidth;
 
-    setHover({ x, y });
+    if (endPosition > windowWidth / 2) {
+      setPosition({ x: x - tooltipWidth - 5, y });
+    } else {
+      setPosition({ x, y });
+    }
   };
 
   return (
     <div
       onMouseMove={onMouseMove}
-      onMouseLeave={() => setHover(null)}
+      onMouseLeave={() => setPosition(null)}
       style={calcPositionStyles()}
       ref={hoverRef}
-      class={cx(styles.segment, { [styles.hover]: hover() })}>
+      class={cx(styles.segment, { [styles.hover]: position() })}>
       <pre class={styles.label}>{props.data.parentType}</pre>
-      {hover() && <Tooltip data={props.data} x={hover()?.x} y={hover()?.y} />}
+      <Tooltip
+        ref={tooltipRef}
+        data={props.data}
+        opacity={position() ? '1' : '0'}
+        x={position()?.x}
+        y={position()?.y}
+      />
     </div>
   );
 };
