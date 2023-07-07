@@ -75,11 +75,19 @@ export async function requestGraphQL(
 }
 
 async function parseVariables(data: IGraphQLRequestData, options: IOptionData) {
+  if (!options.variables) {
+    throw new Error('No variables provided');
+  }
+
   const variables = await fs.promises.readFile(options.variables);
   data.variables = JSON.parse(variables.toString());
 }
 
 export async function getRequestBody(options: IOptionData) {
+  if (!options.schema) {
+    throw new Error('No schema provided');
+  }
+
   const data: IGraphQLRequestData = {
     query: (await fs.promises.readFile(options.schema)).toString(),
   };

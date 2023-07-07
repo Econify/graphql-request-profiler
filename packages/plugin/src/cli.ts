@@ -29,14 +29,45 @@ async function makeRequestAndOpenData(options: IOptionData) {
     JSON.stringify(response.data.extensions.traces)
   );
 
-  await openData({ data: fileName } as IOptionData);
+  await openData({ ...options, data: fileName } as IOptionData);
+}
 
-  if (!options.output) {
-    await fs.promises.rm(fileName);
-  }
+function webserver() {
+  return (res: Function, rej: (error: Error) => void) => {
+    const port = String(options.port || 8080);
+
+    const server = childProcess.spawn('npx', [
+      'serve',
+      path.join(__dirname, '../dist/public'),
+      '-l',
+      port,
+    ]);
+
+    server.on('close', (code) => {
+      if (code !== 0) {
+        rej(new Error(`Server exited with code ${code}`));
+      } else {
+        res();
+      }
+    });
+
+    server.stdout.on('data', (data) => {
+      if (data.toString().match(/Accepting connections/)) {
+        childProcess.exec(`${getOpenCommand()} http://localhost:${port}`);
+      }
+    });
+
+    server.stderr.on('data', (data) => {
+      console.error(data.toString());
+    });
+  };
 }
 
 async function openData(options: IOptionData) {
+  if (!options.data) {
+    throw new Error('No data file specified');
+  }
+
   const pathToWrite = path.join(__dirname, '../dist/public/data.js');
 
   const dataContents = await fs.promises.readFile(options.data);
@@ -46,29 +77,11 @@ async function openData(options: IOptionData) {
     `/* eslint-disable no-undef */\nwindow.data = ${dataContents.toString()}`
   );
 
-  return new Promise((res, rej) => {
-    const server = childProcess.spawn('npx', [
-      'serve',
-      path.join(__dirname, '../dist/public'),
-      '-l',
-      '8080',
-    ]);
+  if (!options.output) {
+    await fs.promises.rm(options.data);
+  }
 
-    server.on('close', (code) => {
-      if (code !== 0) {
-        rej(code);
-      } else {
-        res(code);
-      }
-    });
-
-    server.stdout.on('data', (data) => {
-      if (data.toString().match(/Accepting connections/)) {
-        const openCmd = getOpenCommand();
-        childProcess.exec(`${openCmd} http://localhost:8080`);
-      }
-    });
-  });
+  return new Promise(webserver());
 }
 
 const options = commandLineArgs([
@@ -79,6 +92,7 @@ const options = commandLineArgs([
   { name: 'variables', alias: 'v', type: String },
   { name: 'data', alias: 'd', type: String },
   { name: 'headerName', alias: 'h', type: String },
+  { name: 'port', alias: 'p', type: Number },
   { name: 'help', type: Boolean },
 ]) as IOptionData;
 
