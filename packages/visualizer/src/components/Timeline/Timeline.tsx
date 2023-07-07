@@ -32,25 +32,23 @@ export const Timeline: Component<TTimelineProps> = (props) => {
     const x = e.clientX;
 
     setTimeCursor(x);
-    // (x * props.totalTimeMs * (1 / props.scale)) / width
+
     const scrollLeft = props.containerRef.scrollLeft;
     const scrollWidth = props.containerRef.scrollWidth;
 
     const ms = Math.round(((x + scrollLeft) * props.totalTimeMs) / scrollWidth);
+    timeCursorLabelRef.innerHTML = `${ms}ms`;
 
-    if (x > screenWidth / 2 && timeCursorLabelRef.style.left !== '-170px') {
-      timeCursorLabelRef.style.left = '-170px';
+    const timeCursorOffset = `calc(-${timeCursorLabelRef.clientWidth}px - 10px)`;
+
+    if (
+      x > screenWidth / 2 &&
+      timeCursorLabelRef.style.left !== timeCursorOffset
+    ) {
+      timeCursorLabelRef.style.left = timeCursorOffset;
     } else if (x < screenWidth / 2 && timeCursorLabelRef.style.left !== '0') {
       timeCursorLabelRef.style.left = '0';
     }
-
-    timeCursorLabelRef.innerHTML = `
-    <div>${ms}ms</div>
-    <div>clientX: ${e.clientX}</div>
-    <div>scrollLeft: ${scrollLeft}</div>
-    <div>scrollWidth: ${scrollWidth}</div>
-    <div>screenWidth: ${screenWidth}</div>
-    `;
   };
 
   onMount(() => {

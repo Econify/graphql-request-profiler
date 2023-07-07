@@ -9,7 +9,6 @@
 
 .label {
   top: 90px;
-  width: 150px;
   position: absolute;
   background-color: var(--white);
   padding: 4px;

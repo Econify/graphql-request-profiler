@@ -39,7 +39,7 @@ export const Segment: Component<ISegmentProps> = (props) => {
 
     styles['width'] = `calc(${
       (props.data.execTimeMs / props.totalTimeMs) * 100 * props.scale
-    }% - 4px)`;
+    }%)`;
 
     styles['margin-left'] = `${
       (props.data.execStartTimeMs / props.totalTimeMs) * 100 * props.scale
