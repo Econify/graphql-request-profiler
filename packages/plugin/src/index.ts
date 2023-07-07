@@ -16,6 +16,7 @@ import type {
 
 import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
+import { IncomingMessage } from 'http';
 
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
@@ -37,17 +38,25 @@ export function createExpressProfilerPlugin(
   return options;
 }
 
-export function createHttpHandlerProfilerPlugin({ schema, context, ...rest }: { schema: GraphQLSchema, context?: any }) {
-  decorateResolvers(schema);
+export function createHttpHandlerProfilerPlugin<TContext = any>(
+  req: IncomingMessage,
+  { schema, context, ...rest }: HandlerOptions<TContext>,
+  config?: IPluginOptions
+) {
+  if (req.headers[config?.headerName || 'x-trace'] === 'true') {
+    useResolverDecorator(<GraphQLSchema>schema, trace);
 
-  return {
-    ...rest,
-    schema,
-    context: createHttpContext(context), 
-    onOperation: (req: any, args: any, result: any) => {
-      result.extensions = getResolverTraces(args.contextValue);
-    },
-  };
+    return {
+      ...rest,
+      schema,
+      context: createHttpContext(context),
+      onOperation: (req: any, args: any, result: any) => {
+        result.extensions = getResolverTraces(args.contextValue);
+      },
+    };
+  }
+
+  return { ...rest, schema, context };
 }
 
 export function createApolloProfilerPlugin(options?: IPluginOptions) {
@@ -170,7 +179,6 @@ function trace(fn: ResolverFunction): ResolverFunction {
 
       const execTimeMs = nsToMs(endTime - startTime);
 
-      console.log('execTimeMs', execTimeMs)
       if (execTimeMs > 0) {
         context[SYMBOL_TRACES].push({
           execTimeMs,

@@ -3,14 +3,13 @@ import { createHandler } from 'graphql-http/lib/use/http';
 import { buildSchema } from '../schema';
 import { createHttpHandlerProfilerPlugin } from '../../src/index';
 
-// Create the GraphQL over HTTP Node request handler
-
-// Create a HTTP server using the listner on `/graphql`
 const server = http.createServer((req, res) => {
-  const handler = createHandler(createHttpHandlerProfilerPlugin({ schema: buildSchema() }));
-
   if (req.url?.startsWith('/graphql')) {
-    handler(req, res)
+    createHandler(
+      createHttpHandlerProfilerPlugin(req, {
+        schema: buildSchema(),
+      })
+    )(req, res);
   } else {
     res.writeHead(404).end();
   }
