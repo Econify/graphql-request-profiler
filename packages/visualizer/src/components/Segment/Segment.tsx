@@ -20,7 +20,7 @@ export interface IHoverPosition {
 }
 
 export const Segment: Component<ISegmentProps> = (props) => {
-  let hoverRef: HTMLDivElement | undefined;
+  let segmentRef: HTMLDivElement | undefined;
   let tooltipRef: HTMLDivElement | undefined;
 
   const [position, setPosition] = createSignal<IHoverPosition | null>(null);
@@ -51,17 +51,17 @@ export const Segment: Component<ISegmentProps> = (props) => {
   };
 
   const onMouseMove = (e: MouseEvent) => {
-    const rect = hoverRef?.getBoundingClientRect();
+    const segment = segmentRef?.getBoundingClientRect();
     const windowWidth = window.innerWidth;
     const tooltipWidth = tooltipRef?.clientWidth || 0;
 
-    const { left, top } = rect || { left: 0, top: 0 };
+    const { left, top } = segment || { left: 0, top: 0 };
 
     const x = e.clientX - left;
     const y = e.clientY - top;
-    const endPosition = x + tooltipWidth;
+    const endPosition = e.pageX + tooltipWidth;
 
-    if (endPosition > windowWidth / 2) {
+    if (endPosition > windowWidth) {
       setPosition({ x: x - tooltipWidth - 5, y });
     } else {
       setPosition({ x, y });
@@ -73,7 +73,7 @@ export const Segment: Component<ISegmentProps> = (props) => {
       onMouseMove={onMouseMove}
       onMouseLeave={() => setPosition(null)}
       style={calcPositionStyles()}
-      ref={hoverRef}
+      ref={segmentRef}
       class={cx(styles.segment, { [styles.hover]: position() })}>
       <pre class={styles.label}>{props.data.parentType}</pre>
       <Tooltip
