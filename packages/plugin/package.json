@@ -32,10 +32,11 @@
     "dev:express": "npx nodemon -e \"ts\" -x \"npm run example:express\"",
     "dev:apollo": "npx nodemon -e \"ts\" -x \"npm run example:apollo\"",
     "dev:graphql-http": "npx nodemon -e \"ts\" -x \"npm run example:graphql-http\"",
+    "dev:graphql-http-express": "npx nodemon -e \"ts\" -x \"npm run example:graphql-http-express\"",
     "example:express": "ts-node ./examples/express-graphql/index.ts",
     "example:apollo": "ts-node ./examples/apollo/index.ts",
-    "example:graphql-http": "ts-node ./examples/graphql-http/index.ts",
-    "example:graphql-http-client": "ts-node ./examples/graphql-http/client.ts"
+    "example:graphql-http": "ts-node ./examples/graphql-http/http.ts",
+    "example:graphql-http-express": "ts-node ./examples/graphql-http/express.ts"
   },
   "dependencies": {
     "axios": "^1.4.0",
