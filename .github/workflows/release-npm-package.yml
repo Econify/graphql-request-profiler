@@ -2,11 +2,6 @@ name: Release NPM Package
 
 on:
   workflow_dispatch:
-    inputs:
-      release_type:
-        description: 'Release type (minor, major, patch):'
-        required: true
-        default: patch
 
 jobs:
   publish_npm_package:
@@ -66,7 +61,6 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish Package
-        working-directory: ./packages/plugin
         run: yarn run publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
