@@ -6,6 +6,7 @@ import type {
 } from './types';
 import type { GraphQLSchema } from 'graphql';
 import type { OptionsData, RequestInfo } from 'express-graphql';
+import type { HandlerOptions } from 'graphql-http';
 import type {
   BaseContext,
   GraphQLServiceContext,
@@ -34,6 +35,19 @@ export function createExpressProfilerPlugin(
   }
 
   return options;
+}
+
+export function createHttpHandlerProfilerPlugin({ schema, context, ...rest }: { schema: GraphQLSchema, context?: any }) {
+  decorateResolvers(schema);
+
+  return {
+    ...rest,
+    schema,
+    context: createHttpContext(context), 
+    onOperation: (req: any, args: any, result: any) => {
+      result.extensions = getResolverTraces(args.contextValue);
+    },
+  };
 }
 
 export function createApolloProfilerPlugin(options?: IPluginOptions) {
@@ -79,6 +93,10 @@ function createApolloProfilerOptions(options: GraphQLServiceContext) {
 }
 
 export function getResolverTraces(context: SymbolObject) {
+  if (!context[SYMBOL_TRACES]) {
+    return undefined;
+  }
+
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
@@ -89,6 +107,13 @@ function addStartTime(options: OptionsData | GraphQLRequestContext) {
   const { context } = options as { context: SymbolObject };
 
   context[SYMBOL_START_TIME] = process.hrtime.bigint();
+}
+
+export function createHttpContext(base: any) {
+  return {
+    [SYMBOL_START_TIME]: process.hrtime.bigint(),
+    ...base,
+  };
 }
 
 function decorateResolvers(schema: GraphQLSchema) {
@@ -145,6 +170,7 @@ function trace(fn: ResolverFunction): ResolverFunction {
 
       const execTimeMs = nsToMs(endTime - startTime);
 
+      console.log('execTimeMs', execTimeMs)
       if (execTimeMs > 0) {
         context[SYMBOL_TRACES].push({
           execTimeMs,

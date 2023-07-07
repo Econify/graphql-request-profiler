@@ -52,6 +52,8 @@ export interface IGraphQLResponse {
   extensions?: ReturnType<typeof getResolverTraces>;
 }
 
-export type IExpressGraphQLRequest = IncomingMessage & {
-  url: string;
-};
+export type IExpressGraphQLRequest =
+  | (IncomingMessage & {
+      url: string;
+    })
+  | IncomingMessage;
