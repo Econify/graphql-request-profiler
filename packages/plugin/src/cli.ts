@@ -8,7 +8,6 @@ import childProcess from 'child_process';
 import {
   getOpenCommand,
   getRequestBody,
-  openUrl,
   printHelp,
   requestGraphQL,
 } from './util';
@@ -33,7 +32,7 @@ async function makeRequestAndOpenData(options: IOptionData) {
 }
 
 function webserver() {
-  return (res: Function, rej: (error: Error) => void) => {
+  return (res: (value: unknown) => void, rej: (error: Error) => void) => {
     const port = String(options.port || 8080);
 
     const server = childProcess.spawn('npx', [
@@ -47,7 +46,7 @@ function webserver() {
       if (code !== 0) {
         rej(new Error(`Server exited with code ${code}`));
       } else {
-        res();
+        res(code);
       }
     });
 

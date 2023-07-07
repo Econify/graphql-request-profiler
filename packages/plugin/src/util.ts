@@ -9,7 +9,6 @@ import type {
 } from './types';
 
 import { isIntrospectionType } from 'graphql';
-import childProcess from 'child_process';
 import axios from 'axios';
 import fs from 'fs';
 
@@ -53,11 +52,6 @@ export function getOpenCommand() {
     default:
       return 'xdg-open';
   }
-}
-
-export function openUrl(url: string) {
-  const openCmd = getOpenCommand();
-  childProcess.exec(`${openCmd} ${url}`);
 }
 
 export async function requestGraphQL(
