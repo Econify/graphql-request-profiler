@@ -6,6 +6,8 @@ import type {
 } from './types';
 import type { GraphQLSchema } from 'graphql';
 import type { OptionsData, RequestInfo } from 'express-graphql';
+import type { HandlerOptions } from 'graphql-http';
+import type { IncomingMessage } from 'http';
 import type {
   BaseContext,
   GraphQLServiceContext,
@@ -15,7 +17,6 @@ import type {
 
 import { responsePathAsArray } from 'graphql';
 import { nsToMs, useResolverDecorator } from './util';
-import { IncomingMessage } from 'http';
 
 const SYMBOL_START_TIME = Symbol('SYMBOL_START_TIME');
 const SYMBOL_TRACES = Symbol('SYMBOL_TRACES');
@@ -49,13 +50,20 @@ export function createHttpHandlerProfilerPlugin<TContext = any>(
       ...rest,
       schema,
       context: createHttpContext(context),
-      onOperation: (req: any, args: any, result: any) => {
+      onOperation: (req: unknown, args: unknown, result: unknown) => {
         result.extensions = getResolverTraces(args.contextValue);
       },
     };
   }
 
   return { ...rest, schema, context };
+}
+
+export function createHttpContext(base: unknown) {
+  return {
+    [SYMBOL_START_TIME]: process.hrtime.bigint(),
+    ...base,
+  };
 }
 
 export function createApolloProfilerPlugin(options?: IPluginOptions) {
@@ -101,6 +109,10 @@ function createApolloProfilerOptions(options: GraphQLServiceContext) {
 }
 
 export function getResolverTraces(context: SymbolObject) {
+  if (!context[SYMBOL_TRACES]) {
+    return undefined;
+  }
+
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
