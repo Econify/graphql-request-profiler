@@ -4,7 +4,7 @@ import { buildSchema } from '../schema';
 import { createHttpHandlerProfilerPlugin } from '../../src/index';
 
 const app = express();
-app.all('/graphql', (req, res) =>
+app.all('/graphql', (req) =>
   createHandler(
     createHttpHandlerProfilerPlugin(req, {
       schema: buildSchema(),

@@ -38,20 +38,22 @@ export function createExpressProfilerPlugin(
   return options;
 }
 
-export function createHttpHandlerProfilerPlugin<TContext = any>(
+export function createHttpHandlerProfilerPlugin(
   req: IncomingMessage,
-  { schema, context, ...rest }: HandlerOptions<TContext>,
+  { schema, context, ...rest }: HandlerOptions<unknown, unknown, SymbolObject>,
   config?: IPluginOptions
 ) {
   if (req.headers[config?.headerName || 'x-trace'] === 'true') {
     useResolverDecorator(<GraphQLSchema>schema, trace);
 
-    return {
+    return <HandlerOptions<unknown, unknown, SymbolObject>>{
       ...rest,
       schema,
-      context: createHttpContext(context),
-      onOperation: (req: unknown, args: unknown, result: unknown) => {
-        result.extensions = getResolverTraces(args.contextValue);
+      context: createHttpContext(<SymbolObject>context),
+      onOperation: (_, args, result) => {
+        if (args.contextValue) {
+          result.extensions = getResolverTraces(args.contextValue);
+        }
       },
     };
   }
@@ -59,11 +61,16 @@ export function createHttpHandlerProfilerPlugin<TContext = any>(
   return { ...rest, schema, context };
 }
 
-export function createHttpContext(base: unknown) {
-  return {
+export function createHttpContext(base: SymbolObject) {
+  const context: SymbolObject = {
     [SYMBOL_START_TIME]: process.hrtime.bigint(),
-    ...base,
   };
+
+  if (base && typeof base === 'object') {
+    Object.assign(context, base);
+  }
+
+  return context;
 }
 
 export function createApolloProfilerPlugin(options?: IPluginOptions) {
