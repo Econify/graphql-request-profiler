@@ -38,6 +38,10 @@ jobs:
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Get version
+        id: version
+        run: echo "newTag=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+
       - name: Run package (build, prune)
         run: yarn run package
 
