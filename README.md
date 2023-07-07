@@ -56,6 +56,50 @@ Arguments:
 
 ```
 
+### graphql-http
+
+```js
+import { createHandler } from 'graphql-http/lib/use/http';
+import { createHttpHandlerProfilerPlugin } from '@econify/graphql-request-profiler';
+
+const server = http.createServer((req, res) => {
+  if (req.url?.startsWith('/graphql')) {
+    createHandler(
+      createHttpHandlerProfilerPlugin(req, {
+        schema: buildSchema(),
+      })
+    )(req, res);
+  } else {
+    res.writeHead(404).end();
+  }
+});
+
+server.listen(4000);
+console.log('Listening to port 4000');
+```
+
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/graphql-http/http.ts)
+See [example of graphql-http with express](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/graphql-http/express.ts)
+
+### apollo-server
+
+```js
+import { createApolloProfilerPlugin } from '@econify/graphql-request-profiler';
+
+const server = new ApolloServer({
+  schema: buildSchema(),
+  plugins: [createApolloProfilerPlugin()],
+});
+
+server.listen().then(({ url }) => {
+  console.log(`Listening on ${url}`);
+});
+```
+
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/apollo/index.ts)
+
+#### Deprecated
+
 ### express-graphql
 
 ```js
@@ -74,24 +118,7 @@ app.use(
 );
 ```
 
-See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/express-graphql/index.ts)
-
-### apollo-server
-
-```js
-import { createApolloProfilerPlugin } from '@econify/graphql-request-profiler';
-
-const server = new ApolloServer({
-  schema: buildSchema(),
-  plugins: [createApolloProfilerPlugin()],
-});
-
-server.listen().then(({ url }) => {
-  console.log(`Listening on ${url}`);
-});
-```
-
-See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/examples/apollo/index.ts)
+See [full running example here](https://github.com/Econify/graphql-request-profiler/blob/main/packages/plugin/examples/express-graphql/index.ts)
 
 ### Custom Activation Header
 

@@ -6,6 +6,8 @@ import type {
 } from './types';
 import type { GraphQLSchema } from 'graphql';
 import type { OptionsData, RequestInfo } from 'express-graphql';
+import type { HandlerOptions } from 'graphql-http';
+import type { IncomingMessage } from 'http';
 import type {
   BaseContext,
   GraphQLServiceContext,
@@ -34,6 +36,41 @@ export function createExpressProfilerPlugin(
   }
 
   return options;
+}
+
+export function createHttpHandlerProfilerPlugin(
+  req: IncomingMessage,
+  { schema, context, ...rest }: HandlerOptions<unknown, unknown, SymbolObject>,
+  config?: IPluginOptions
+) {
+  if (req.headers[config?.headerName || 'x-trace'] === 'true') {
+    useResolverDecorator(<GraphQLSchema>schema, trace);
+
+    return <HandlerOptions<unknown, unknown, SymbolObject>>{
+      ...rest,
+      schema,
+      context: createHttpContext(<SymbolObject>context),
+      onOperation: (_, args, result) => {
+        if (args.contextValue) {
+          result.extensions = getResolverTraces(args.contextValue);
+        }
+      },
+    };
+  }
+
+  return { ...rest, schema, context };
+}
+
+export function createHttpContext(base: SymbolObject) {
+  const context: SymbolObject = {
+    [SYMBOL_START_TIME]: process.hrtime.bigint(),
+  };
+
+  if (base && typeof base === 'object') {
+    Object.assign(context, base);
+  }
+
+  return context;
 }
 
 export function createApolloProfilerPlugin(options?: IPluginOptions) {
@@ -79,6 +116,10 @@ function createApolloProfilerOptions(options: GraphQLServiceContext) {
 }
 
 export function getResolverTraces(context: SymbolObject) {
+  if (!context[SYMBOL_TRACES]) {
+    return undefined;
+  }
+
   return {
     totalTimeMs: nsToMs(process.hrtime.bigint() - context[SYMBOL_START_TIME]),
     traces: context[SYMBOL_TRACES],
