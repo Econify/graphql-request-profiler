@@ -46,7 +46,7 @@ jobs:
         uses: gandarez/changelog-action@v1.2.0
         with:
           exclude: |
-            ^CI: version bump to.*
+            /version bump*/i
 
       - name: Get version
         id: version

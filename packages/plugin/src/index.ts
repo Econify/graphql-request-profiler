@@ -65,7 +65,7 @@ export function createHttpHandlerProfilerPlugin(
     };
   }
 
-  return { ...rest, schema, context };
+  return { ...rest, schema, context, onOperation };
 }
 
 export function createHttpContext(base: SymbolObject) {
