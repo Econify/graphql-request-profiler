@@ -5,6 +5,7 @@
   border-radius: 2px;
   background-color: var(--white);
   padding: 8px;
+  pointer-events: none;
 }
 
 .tooltipLine {
