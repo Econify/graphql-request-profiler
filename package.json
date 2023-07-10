@@ -1,6 +1,6 @@
 {
   "name": "graphql-request-profiler-monorepo",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "private": true,
   "description": "Easy to use GraphQL performance analysis utility for tracing resolver execution time",
   "repository": {
