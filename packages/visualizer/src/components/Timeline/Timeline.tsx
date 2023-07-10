@@ -36,7 +36,10 @@ export const Timeline: Component<TTimelineProps> = (props) => {
     const scrollLeft = props.containerRef.scrollLeft;
     const scrollWidth = props.containerRef.scrollWidth;
 
-    const ms = Math.round(((x + scrollLeft) * props.totalTimeMs) / scrollWidth);
+    const widthToUse =
+      scrollWidth <= screenWidth ? scrollWidth * props.scale : scrollWidth;
+
+    const ms = Math.round(((x + scrollLeft) * props.totalTimeMs) / widthToUse);
     timeCursorLabelRef.innerHTML = `${ms}ms`;
 
     const timeCursorOffset = `calc(-${timeCursorLabelRef.clientWidth}px - 10px)`;
@@ -83,7 +86,7 @@ export const Timeline: Component<TTimelineProps> = (props) => {
           class={styles.timeCursor}
           style={{
             display: typeof timeCursor() === 'undefined' ? 'none' : 'block',
-            left: `${timeCursor()}px `,
+            left: `${timeCursor()}px`,
           }}>
           <span ref={timeCursorLabelRef} class={styles.label} />
         </div>
