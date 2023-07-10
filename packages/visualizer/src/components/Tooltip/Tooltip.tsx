@@ -20,6 +20,7 @@ export const Tooltip: Component<ITooltipProps> = (props) => {
         top: `${props.y || 0}px`,
         left: `${props.x || 0}px`,
         opacity: props.opacity,
+        display: props.opacity === '0' ? 'none' : 'block',
       }}>
       <code class={styles.data}>
         {Object.entries(props.data).map(([key, value]) => (
