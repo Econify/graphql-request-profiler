@@ -5,6 +5,7 @@ import Toolbar from './components/Toolbar/Toolbar';
 import { TColorsOption, TSortOption } from './types';
 import Chart from './components/Chart/Chart';
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const data = window.data;
 

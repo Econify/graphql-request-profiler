@@ -27,5 +27,6 @@ export function getColor(key: string): string {
     colorMap.set(key, colors[colorMap.size % colors.length]);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return colorMap.get(key)!;
 }
