@@ -1,6 +1,5 @@
 import { createSignal, type Component, ParentProps, onMount } from 'solid-js';
 
-import cx from 'classnames';
 import styles from './Timeline.module.css';
 
 export type TTimelineProps = ParentProps<{

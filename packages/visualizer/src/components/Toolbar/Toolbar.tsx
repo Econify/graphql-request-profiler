@@ -1,4 +1,4 @@
-import { type Component, type Setter, type Ref, onMount } from 'solid-js';
+import { type Component, type Setter } from 'solid-js';
 
 import styles from './Toolbar.module.css';
 import { TColorsOption, TSortOption } from '../../types';

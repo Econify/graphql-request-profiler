@@ -1,4 +1,4 @@
-import { createSignal, type Component, type JSX, onMount } from 'solid-js';
+import { createSignal, type Component, type JSX } from 'solid-js';
 import type { TColorsOption, TDataPoint } from '../../types';
 
 import cx from 'classnames';
